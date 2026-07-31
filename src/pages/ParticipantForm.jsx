@@ -200,7 +200,11 @@ export default function BookingForm() {
 
     try {
       setSubmitting(true);
-
+      showModal(
+        "ይጠብቁ",
+        "መረጃዎትን በተሳካ ሁኔታ ለመላክ ተዘጋጅቷል። እሺ የሚለውን ይንኩ።",
+        "success",
+      );
       const payload = {
         name: normalizeSpaces(form.name),
         organization: normalizeSpaces(form.organization),
