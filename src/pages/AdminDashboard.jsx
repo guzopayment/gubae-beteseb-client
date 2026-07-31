@@ -17,21 +17,21 @@ function StatCard({ title, value, subtitle }) {
   );
 }
 
-function StatusBadge({ value }) {
-  const safe = value || "Pending";
-  const cls =
-    safe === "Confirmed"
-      ? "bg-green-100 text-green-700"
-      : safe === "Rejected"
-        ? "bg-red-100 text-red-700"
-        : "bg-yellow-100 text-yellow-700";
+// function StatusBadge({ value }) {
+//   const safe = value || "Pending";
+//   const cls =
+//     safe === "Confirmed"
+//       ? "bg-green-100 text-green-700"
+//       : safe === "Rejected"
+//         ? "bg-red-100 text-red-700"
+//         : "bg-yellow-100 text-yellow-700";
 
-  return (
-    <span className={`px-3 py-1 rounded-full text-xs font-bold ${cls}`}>
-      {safe}
-    </span>
-  );
-}
+//   return (
+//     <span className={`px-3 py-1 rounded-full text-xs font-bold ${cls}`}>
+//       {safe}
+//     </span>
+//   );
+// }
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -114,9 +114,9 @@ export default function AdminDashboard() {
       setBookingSummary({
         total: payload.total || 0,
         totalParticipants: payload.totalParticipants || 0,
-        pendingCount: payload.pendingCount || 0,
-        confirmedCount: payload.confirmedCount || 0,
-        rejectedCount: payload.rejectedCount || 0,
+        // pendingCount: payload.pendingCount || 0,
+        // confirmedCount: payload.confirmedCount || 0,
+        // rejectedCount: payload.rejectedCount || 0,
       });
     } catch (err) {
       console.error(
@@ -129,9 +129,9 @@ export default function AdminDashboard() {
       setBookingSummary({
         total: 0,
         totalParticipants: 0,
-        pendingCount: 0,
-        confirmedCount: 0,
-        rejectedCount: 0,
+        // pendingCount: 0,
+        // confirmedCount: 0,
+        // rejectedCount: 0,
       });
     } finally {
       setLoading(false);
@@ -174,7 +174,11 @@ export default function AdminDashboard() {
 
   const menu = [
     { id: "dashboard", label: "Booking Overview", path: "/admin-dashboard" },
-    { id: "report", label: "Booking Verification Report", path: "/admin-report" },
+    {
+      id: "report",
+      label: "Booking Verification Report",
+      path: "/admin-report",
+    },
     { id: "history", label: "History Log", path: "/admin-history" },
     { id: "logout", label: "LOGOUT", action: "logout" },
   ];
@@ -429,8 +433,8 @@ export default function AdminDashboard() {
               Booking Verification Dashboard
             </h1>
             <p className="text-gray-500 mt-2">
-              Review submissions, verification images, participant totals, and extra
-              participant details.
+              Review submissions, verification images, participant totals, and
+              extra participant details.
             </p>
           </div>
           <div className="flex gap-3">

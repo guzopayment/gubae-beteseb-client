@@ -168,14 +168,17 @@ export default function Home() {
                 <strong>
                   {/* የዝክረ ቅዱሳን ጉዞ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ኦፊሴላዊ የምዝገባ እና
                 የማረጋገጫ ገጽ */}
-                  ጉባኤ ቤተሰብ ለብሥራት
+                  ጉባኤ ቤተሰብ ለብሥራት ነሐሴ 19/2018ዓም
                 </strong>
               </strong>
             </h1>
             <p className="mt-4 text-lg md:text-2xl text-emerald-700 font-semibold">
               {/* Official registration and confirmation page for the Zikre Kidusan
               trip to Menagesha Garaw Medhanealem Unity Monastery. */}
-              <em> ቤተሰባዊ አንድነት የሚጠነክርበት ታላቅ ቀን!!!</em>
+              <em>
+                {" "}
+                ቤተሰባዊ አንድነት የሚጠነክርበት <br /> ታላቅ ቀን!!!
+              </em>
             </p>
             <p className="mt-3 text-sm md:text-base text-gray-600 leading-relaxed">
               {/* ይህ ገጽ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ተሳታፊዎች የምዝገባ መረጃ ለማስገባትና ሁኔታ
@@ -187,7 +190,7 @@ export default function Home() {
           <div className="flex justify-center items-center mb-8">
             <div className="w-full max-w-3xl">
               <h2 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold">
-                ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለ ለጉባኤ ቤተሰብ ለብስራት ቤተሰባዊ አንድነት
+                ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት ቤተሰባዊ አንድነት
                 የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
               </h2>
               <div
@@ -232,8 +235,8 @@ export default function Home() {
                 </p>
               </div>
               <h2 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold">
-                በመሆኑም እርስዎ ለዚህ ታላቅ ጉቤ የሚገኙ መሆንዎን ከታች ያለውን የተሳትፎ ምዝገባ ቅጽ ይሙሉ
-                የሚለውን በመንካት ተሳታፊነትዎን ያሳውቁ፦
+                በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን የተሳትፎ ምዝገባ ቅጽ ይሙሉ
+                የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
               </h2>
 
               <h5 className="text-green-700 font-bold place-items-center mb-4">

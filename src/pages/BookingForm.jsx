@@ -252,7 +252,7 @@ export default function BookingForm() {
           className="bg-white p-6 md:p-8 rounded-3xl shadow-xl"
         >
           <h2 className="text-2xl md:text-3xl font-extrabold mb-4 text-center text-emerald-700">
-            ለጉባኤ ቤተሰብ ለብስራት ተሳትፎ የምዝገባ ቅጽ
+            ለጉባኤ ቤተሰብ ለብሥራት ተሳትፎ የምዝገባ ቅጽ
           </h2>
 
           <p className="text-center text-gray-500 mb-6">
@@ -418,7 +418,7 @@ export default function BookingForm() {
 
           <div className="text-sm text-gray-500 mt-4">
             * እባክዎ የሞሉት መረጃ እና ያስገቡት ምስል ትክክለኛ መሆኑን ያረጋግጡ። ይህ ገጽ የይለፍ ቃል፣ የካርድ
-            ቁጥር ወይም የመተግበሪያ ማውረጃ አይጠይቅም። የሰርቨር ወይም የኢንተርኔት ችግኝ ከተፈጠረ የማስጠንቀቂያ
+            ቁጥር ወይም የመተግበሪያ ማውረጃ አይጠይቅም። የሰርቨር ወይም የኢንተርኔት ችግር ከተፈጠረ የማስጠንቀቂያ
             መልእክት ይታያል።
           </div>
         </form>
