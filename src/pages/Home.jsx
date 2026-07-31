@@ -28,6 +28,10 @@ import {
 //     </span>
 //   );
 // }
+// Brand palette
+const BRAND_DARK = "#00313c";
+const BRAND_DARKER = "#022e38";
+const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
 
 export default function Home() {
   const navigate = useNavigate();
@@ -47,6 +51,10 @@ export default function Home() {
     type: "info",
   });
   const scrollRef = useRef(null);
+  const linkBase =
+    "block w-full rounded-xl px-4 py-3 font-semibold transition cursor-pointer text-sm md:text-base";
+  const linkInactive = "text-white hover:bg-white/10";
+  const linkActiveStyle = { backgroundColor: "#ffffff", color: BRAND_DARK };
 
   const showModal = (title, message, type = "info") =>
     setModal({ open: true, title, message, type });
@@ -162,17 +170,27 @@ export default function Home() {
     >
       <div className="min-h-screen bg-emerald-50/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center overflow-x-hidden font-extra-bold">
         <div className="w-full max-w-5xl mx-auto text-center">
-          <div className="backdrop-blur-xl shadow-xl py-5 px-3 md:px-5 mb-7 rounded-3xl bg-white/50">
-            <h1 className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-tight">
+          <div
+            className="backdrop-blur-xl shadow-xl py-5 px-3 md:px-5 mb-7 rounded-3xl bg-white/50"
+            style={{ backgroundColor: BRAND_DARKER }}
+          >
+            <h1
+              className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-tight"
+              style={{ color: BRAND_ACCENT }}
+            >
               <strong>
                 <strong>
                   {/* የዝክረ ቅዱሳን ጉዞ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ኦፊሴላዊ የምዝገባ እና
                 የማረጋገጫ ገጽ */}
-                  ጉባኤ ቤተሰብ ለብሥራት ነሐሴ 19/2018ዓም
+                  ጉባኤ ቤተሰብ ለብሥራት <br />
+                  ነሐሴ 19/2018ዓም
                 </strong>
               </strong>
             </h1>
-            <p className="mt-4 text-lg md:text-2xl text-emerald-700 font-semibold">
+            <p
+              className="mt-4 text-lg md:text-2xl text-emerald-700 font-semibold"
+              style={{ color: "white" }}
+            >
               {/* Official registration and confirmation page for the Zikre Kidusan
               trip to Menagesha Garaw Medhanealem Unity Monastery. */}
               <em>
@@ -189,7 +207,10 @@ export default function Home() {
 
           <div className="flex justify-center items-center mb-8">
             <div className="w-full max-w-3xl">
-              <h2 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold">
+              <h2
+                className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
+                style={{ color: BRAND_DARK }}
+              >
                 ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት ቤተሰባዊ አንድነት
                 የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
               </h2>
@@ -220,7 +241,10 @@ export default function Home() {
                   {/* Official account holder name:{" "} */}
                   {/* <strong>Tewodros Sahile and Elsa Fantahun</strong> */}
                 </h2>
-                <p className="mt-3 text-extra-sm  md:text-extra-sm text-gray-700">
+                <p
+                  className="mt-3 text-extra-sm  md:text-extra-sm text-gray-700"
+                  style={{ color: BRAND_DARK }}
+                >
                   <em>
                     {" "}
                     <small>
@@ -234,7 +258,10 @@ export default function Home() {
                   </em>
                 </p>
               </div>
-              <h2 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold">
+              <h2
+                className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
+                style={{ color: BRAND_DARK }}
+              >
                 በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን የተሳትፎ ምዝገባ ቅጽ ይሙሉ
                 የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
               </h2>
@@ -253,7 +280,8 @@ export default function Home() {
                 onClick={() => navigate("/submit")}
                 // onClick={() => navigate("/thank-you ")}
                 // onClick={() => navigate("/no-event")}
-                className="bg-gradient-to-r from-emerald-700 to-green-600 text-white text-lg md:text-3xl px-8 md:px-16 py-5 md:py-7 rounded-[30px] shadow-lg hover:scale-105 hover:from-emerald-800 hover:to-green-700 transition duration-300 border border-white/30 w-full"
+                className="bg-gradient-to-r from-green-950 to-emerald-950 text-white text-lg md:text-3xl px-8 md:px-16 py-5 md:py-7 rounded-[30px] shadow-lg hover:scale-105 hover:from-emerald-800 hover:to-emerald-950 transition duration-300 border border-white/30 w-full"
+                style={{ color: BRAND_ACCENT }}
               >
                 {/* የምዝገባ ቅጽ ዝግ ነው / Registration Form is Closed */}
                 የተሳትፎ ምዝገባ ቅጽ ይሙሉ

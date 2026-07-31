@@ -94,10 +94,16 @@
 import back from "../assets/home.png";
 import closedZK from "../assets/closedZK.jpg";
 import buyMeCoffee from "../assets/buyMeCoffee.gif";
-
+const BRAND_DARK = "#00313c";
+const BRAND_DARKER = "#022e38";
+const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
 const DEVELOPER_ACCOUNT_NUMBER = "1000254897837";
 const TELEBIRR_PHONE_NUMBER = "0955168453";
 const DEVELOPER_ACCOUNT_NAME = "Semahegn Tilahun Demelashe";
+const linkBase =
+  "block w-full rounded-xl px-4 py-3 font-semibold transition cursor-pointer text-sm md:text-base";
+const linkInactive = "text-white hover:bg-white/10";
+const linkActiveStyle = { backgroundColor: "#ffffff", color: BRAND_DARK };
 
 export default function NoEvent() {
   return (
@@ -114,11 +120,17 @@ export default function NoEvent() {
           ቲኬት ሽያጭ አብቅቷል። ስለተሳተፍ እናመሰግናለን | Ticket sales are closed. Thank you
           for your participation.*/}
         </h3>
-        <h2 className="text-2xl font-extrabold mb-6 bg-emerald-900 text-white py-3 rounded">
+        <h2
+          className="text-2xl font-extrabold mb-6 bg-emerald-900 text-white py-3 rounded"
+          style={{ backgroundColor: BRAND_DARKER, color: BRAND_ACCENT }}
+        >
           እናመሰግናለን!|Thank you!
           {/* ይቅርታ!|Sorry! */}
         </h2>
-        <div className="text-lg text-gray-700 mb-4 bg-slate-50 rounded-2xl shadow-emerald-800">
+        <div
+          className="text-lg text-gray-700 mb-4 bg-slate-50 rounded-2xl shadow-emerald-800"
+          // style={{ backgroundColor: BRAND_DARK, color: "white" }}
+        >
           <p>
             {" "}
             <strong>
@@ -188,6 +200,7 @@ export default function NoEvent() {
           <button
             className="bg-emerald-500 text-white w-full py-3 rounded-lg mt-6"
             onClick={() => (window.location.href = "/")}
+            style={{ backgroundColor: BRAND_DARKER }}
           >
             <img src={back} alt="back" className="w-5 h-5 inline mr-2" />
             Back to Home

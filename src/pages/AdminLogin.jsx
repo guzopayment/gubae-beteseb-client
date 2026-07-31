@@ -18,7 +18,7 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const redirectTo = location.state?.from || "/admin-dashboard";
+  const redirectTo = location.state?.from || "/admin-participants";
   const sessionExpired = location.state?.sessionExpired;
 
   const showModal = (title, message, type = "info") => {
