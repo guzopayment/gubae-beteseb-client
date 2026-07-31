@@ -116,44 +116,44 @@ export default function Home() {
     setLookup((prev) => ({ ...prev, phone: sanitized }));
   };
 
-  const checkStatus = async () => {
-    if (
-      !lookup.name.trim() &&
-      !lookup.phone.trim() &&
-      !lookup.organization.trim()
-    ) {
-      showModal(
-        "ማስጠንቀቂያ",
-        "የሁኔታ ምርመራ ለማድረግ እባክዎ ስም፣ ስልክ ወይም ድርጅት ያስገቡ።",
-        "error",
-      );
-      return;
-    }
+  // const checkStatus = async () => {
+  //   if (
+  //     !lookup.name.trim() &&
+  //     !lookup.phone.trim() &&
+  //     !lookup.organization.trim()
+  //   ) {
+  //     showModal(
+  //       "ማስጠንቀቂያ",
+  //       "የሁኔታ ምርመራ ለማድረግ እባክዎ ስም፣ ስልክ ወይም ድርጅት ያስገቡ።",
+  //       "error",
+  //     );
+  //     return;
+  //   }
 
-    try {
-      setChecking(true);
-      const res = await api.get("/bookings/public/status", { params: lookup });
-      const data = Array.isArray(res.data) ? res.data : [];
-      setLookupResults(data);
-      if (!data.length) {
-        showModal("ማስጠንቀቂያ", "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።", "error");
-      }
-    } catch (error) {
-      setLookupResults([]);
-      showModal(
-        "ማስጠንቀቂያ",
-        error.response?.data?.message || "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።",
-        "error",
-      );
-    } finally {
-      setChecking(false);
-    }
-  };
+  //   try {
+  //     setChecking(true);
+  //     const res = await api.get("/bookings/public/status", { params: lookup });
+  //     const data = Array.isArray(res.data) ? res.data : [];
+  //     setLookupResults(data);
+  //     if (!data.length) {
+  //       showModal("ማስጠንቀቂያ", "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።", "error");
+  //     }
+  //   } catch (error) {
+  //     setLookupResults([]);
+  //     showModal(
+  //       "ማስጠንቀቂያ",
+  //       error.response?.data?.message || "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።",
+  //       "error",
+  //     );
+  //   } finally {
+  //     setChecking(false);
+  //   }
+  // };
 
-  const duplicatedUpdates = useMemo(() => {
-    if (!recentUpdates.length) return [];
-    return [...recentUpdates, ...recentUpdates];
-  }, [recentUpdates]);
+  // const duplicatedUpdates = useMemo(() => {
+  //   if (!recentUpdates.length) return [];
+  //   return [...recentUpdates, ...recentUpdates];
+  // }, [recentUpdates]);
 
   return (
     <div
