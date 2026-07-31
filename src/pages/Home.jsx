@@ -281,7 +281,7 @@ export default function Home() {
                 // onClick={() => navigate("/thank-you ")}
                 // onClick={() => navigate("/no-event")}
                 className="bg-gradient-to-r from-green-950 to-emerald-950 text-white text-lg md:text-3xl px-8 md:px-16 py-5 md:py-7 rounded-[30px] shadow-lg hover:scale-105 hover:from-emerald-800 hover:to-emerald-950 transition duration-300 border border-white/30 w-full"
-                style={{ color: BRAND_DARK }}
+                style={{ color: BRAND_ACCENT }}
               >
                 {/* የምዝገባ ቅጽ ዝግ ነው / Registration Form is Closed */}
                 የተሳትፎ ምዝገባ ቅጽ ይሙሉ
