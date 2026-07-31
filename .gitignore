@@ -52,3 +52,4 @@ add/
 createAdmin.js
 .vercel
 gubae-beteseb-client/
+.env*

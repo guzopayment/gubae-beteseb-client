@@ -14,20 +14,20 @@ import {
   buildStatusMessage,
 } from "../utils/bookingValidation";
 
-function StatusBadge({ status }) {
-  const cls =
-    status === "Confirmed"
-      ? "bg-green-100 text-green-700"
-      : status === "Rejected"
-        ? "bg-red-100 text-red-700"
-        : "bg-yellow-100 text-yellow-700";
+// function StatusBadge({ status }) {
+//   const cls =
+//     status === "Confirmed"
+//       ? "bg-green-100 text-green-700"
+//       : status === "Rejected"
+//         ? "bg-red-100 text-red-700"
+//         : "bg-yellow-100 text-yellow-700";
 
-  return (
-    <span className={`px-3 py-1 rounded-full text-xs font-bold ${cls}`}>
-      {status || "Pending"}
-    </span>
-  );
-}
+//   return (
+//     <span className={`px-3 py-1 rounded-full text-xs font-bold ${cls}`}>
+//       {status || "Pending"}
+//     </span>
+//   );
+// }
 
 export default function Home() {
   const navigate = useNavigate();

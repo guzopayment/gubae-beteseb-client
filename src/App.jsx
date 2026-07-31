@@ -12,6 +12,8 @@ import ProtectedRoute from "./components/admin/ProtectedRoute";
 import SessionManager from "./components/admin/SessionManager";
 import Footer from "./components/Footer";
 import BackToTopButton from "./components/BackToTopButton";
+import AdminParticipants from "./pages/AdminParticipants";
+import ParticipantForm from "./pages/ParticipantForm";
 
 export default function App() {
   return (
@@ -22,11 +24,21 @@ export default function App() {
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/submit" element={<BookingForm />} />
+            {/* <Route path="/submit" element={<BookingForm />} /> */}
+            <Route path="/submit" element={<ParticipantForm />} />
             <Route path="/no-event" element={<NoEvent />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/admin-login" element={<AdminLogin />} />
-
+            <Route
+              path="/admin-participants"
+              element={
+                <ProtectedRoute>
+                  <ErrorBoundary>
+                    <AdminParticipants />
+                  </ErrorBoundary>
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/admin-dashboard"
               element={

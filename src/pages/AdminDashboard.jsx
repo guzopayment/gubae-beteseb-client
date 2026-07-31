@@ -464,14 +464,14 @@ export default function AdminDashboard() {
             title="Total Submissions"
             value={summaryCards.totalBookings}
           />
-          <StatCard
+          {/* <StatCard
             title="Confirmed Participants"
             value={summaryCards.totalParticipants}
             subtitle="Participants from confirmed submissions"
           />
           <StatCard title="Pending" value={summaryCards.pendingCount} />
           <StatCard title="Confirmed" value={summaryCards.confirmedCount} />
-          <StatCard title="Rejected" value={summaryCards.rejectedCount} />
+          <StatCard title="Rejected" value={summaryCards.rejectedCount} /> */}
         </div>
 
         <div className="bg-white rounded-2xl shadow p-4 md:p-5 mb-6">
@@ -482,7 +482,7 @@ export default function AdminDashboard() {
               placeholder="Search name / organization / phone / sub city..."
               className="w-full md:w-[420px] bg-gray-50 rounded-full px-5 py-3 border focus:outline-none focus:ring-2 focus:ring-emerald-300"
             />
-            <select
+            {/* <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
@@ -500,7 +500,7 @@ export default function AdminDashboard() {
               className="bg-emerald-700 text-white px-5 py-3 rounded-full font-bold hover:bg-emerald-800 transition"
             >
               Search
-            </button>
+            </button>*/}
             <button
               onClick={clearSearch}
               className="bg-gray-200 text-gray-700 px-5 py-3 rounded-full font-bold hover:bg-gray-300 transition"
@@ -541,7 +541,7 @@ export default function AdminDashboard() {
                     <th className="p-3 text-left text-sm whitespace-nowrap">
                       Sex
                     </th>
-                    <th className="p-3 text-left text-sm whitespace-nowrap">
+                    {/* <th className="p-3 text-left text-sm whitespace-nowrap">
                       Sub City
                     </th>
                     <th className="p-3 text-left text-sm whitespace-nowrap">
@@ -558,7 +558,7 @@ export default function AdminDashboard() {
                     </th>
                     <th className="p-3 text-left text-sm whitespace-nowrap">
                       Actions
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
 
@@ -586,7 +586,7 @@ export default function AdminDashboard() {
                           {item.sex || "—"}
                         </td>
 
-                        <td className="p-3 text-sm min-w-[130px]">
+                        {/* <td className="p-3 text-sm min-w-[130px]">
                           {item.subCity || "—"}
                         </td>
 
@@ -609,13 +609,13 @@ export default function AdminDashboard() {
                               </button>
                             ) : null}
                           </div>
-                        </td>
+                        </td> */}
 
-                        <td className="p-3 text-sm whitespace-nowrap">
+                        {/* <td className="p-3 text-sm whitespace-nowrap">
                           <StatusBadge value={item.status} />
-                        </td>
+                        </td> */}
 
-                        <td className="p-3 text-sm whitespace-nowrap">
+                        {/* <td className="p-3 text-sm whitespace-nowrap">
                           {item.paymentProof ? (
                             <a
                               href={item.paymentProof}
@@ -635,15 +635,15 @@ export default function AdminDashboard() {
                           ) : (
                             "—"
                           )}
-                        </td>
+                        </td> */}
 
-                        <td className="p-3 text-sm whitespace-nowrap min-w-[140px] text-gray-500">
+                        {/* <td className="p-3 text-sm whitespace-nowrap min-w-[140px] text-gray-500">
                           {item.createdAt
                             ? new Date(item.createdAt).toLocaleString()
                             : "—"}
-                        </td>
+                        </td> */}
 
-                        <td className="p-3 text-sm whitespace-nowrap">
+                        {/* <td className="p-3 text-sm whitespace-nowrap">
                           <div className="flex flex-nowrap items-center gap-2 whitespace-nowrap">
                             <button
                               onClick={() => approveBooking(item)}
@@ -666,10 +666,10 @@ export default function AdminDashboard() {
                               Delete
                             </button>
                           </div>
-                        </td>
+                        </td> */}
                       </tr>
 
-                      {expandedId === item._id &&
+                      {/* {expandedId === item._id &&
                       Array.isArray(item.participantDetails) &&
                       item.participantDetails.length > 0 ? (
                         <tr className="bg-emerald-50/60">
@@ -731,7 +731,7 @@ export default function AdminDashboard() {
                             </div>
                           </td>
                         </tr>
-                      ) : null}
+                      ) : null}*/}
                     </Fragment>
                   ))}
                 </tbody>
