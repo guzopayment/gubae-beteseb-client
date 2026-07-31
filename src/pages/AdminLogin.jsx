@@ -2,7 +2,9 @@ import { useState } from "react";
 import api from "../services/api";
 import { useNavigate, useLocation } from "react-router-dom";
 import MessageModal from "../components/MessageModal";
-
+const BRAND_DARK = "#00313c";
+const BRAND_DARKER = "#022e38";
+const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
 const SESSION_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
 
 export default function AdminLogin() {
@@ -20,6 +22,10 @@ export default function AdminLogin() {
 
   const redirectTo = location.state?.from || "/admin-participants";
   const sessionExpired = location.state?.sessionExpired;
+  const linkBase =
+    "block w-full rounded-xl px-4 py-3 font-semibold transition cursor-pointer text-sm md:text-base";
+  const linkInactive = "text-white hover:bg-white/10";
+  const linkActiveStyle = { backgroundColor: "#ffffff", color: BRAND_DARK };
 
   const showModal = (title, message, type = "info") => {
     setModalTitle(title);
@@ -74,7 +80,10 @@ export default function AdminLogin() {
         onSubmit={handleLogin}
         className="bg-white p-5 md:p-8 rounded-2xl shadow-lg w-full max-w-sm"
       >
-        <h2 className="text-2xl mb-3 text-center font-bold">
+        <h2
+          className="text-2xl mb-3 text-center font-bold"
+          style={{ color: BRAND_DARK }}
+        >
           ወደ ኦፊሴላዊ የምዝገባ አስተዳደር መግቢያ | Authorized Staff Portal
         </h2>
 
@@ -104,7 +113,8 @@ export default function AdminLogin() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-emerald-500 text-white w-full py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-60"
+          className="bg-emerald-950 text-white w-full py-3 rounded-lg hover:bg-emerald-700 transition disabled:opacity-60"
+          style={{ color: BRAND_ACCENT }}
         >
           {loading ? "በመግባት ላይ..." : "ግቡ | Login"}
         </button>
