@@ -200,11 +200,7 @@ export default function BookingForm() {
 
     try {
       setSubmitting(true);
-      showModal(
-        "ይጠብቁ",
-        "መረጃዎትን በተሳካ ሁኔታ ለመላክ ተዘጋጅቷል። እሺ የሚለውን ይንኩ።",
-        "success",
-      );
+
       const payload = {
         name: normalizeSpaces(form.name),
         organization: normalizeSpaces(form.organization),
@@ -215,6 +211,11 @@ export default function BookingForm() {
       const res = await api.post("/bookings", payload);
 
       const booking = res.data?.booking || res.data;
+      showModal(
+        "ይጠብቁ",
+        "መረጃዎትን በተሳካ ሁኔታ ለመላክ ተዘጋጅቷል። እሺ የሚለውን ይንኩ።",
+        "success",
+      );
       upsertTrackedBooking({
         bookingId: booking._id,
         name: booking.name,
@@ -225,7 +226,9 @@ export default function BookingForm() {
         unread: false,
       });
 
-      navigate("/thank-you");
+      setTimeout(() => {
+        navigate("/thank-you");
+      }, 1200);
     } catch (submitError) {
       console.error(submitError.response?.data || submitError.message);
       showModal(
