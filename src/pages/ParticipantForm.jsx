@@ -211,11 +211,7 @@ export default function BookingForm() {
       const res = await api.post("/bookings", payload);
 
       const booking = res.data?.booking || res.data;
-      showModal(
-        "ይጠብቁ",
-        "መረጃዎትን በተሳካ ሁኔታ ለመላክ ተዘጋጅቷል። እሺ የሚለውን ይንኩ።",
-        "success",
-      );
+      showModal("ተሳክቷል ", "መረጃዎትን በተሳካ ሁኔታ ተልኳል። እሺ የሚለውን ይንኩ።", "success");
       upsertTrackedBooking({
         bookingId: booking._id,
         name: booking.name,
