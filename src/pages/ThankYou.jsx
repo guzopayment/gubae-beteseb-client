@@ -177,19 +177,21 @@ export default function NoEvent() {
             <div className="mt-4 space-y-2 text-sm md:text-base">
               <p>
                 <small>
-                  <span className="font-bold">CBE Account Number:</span>{" "}
-                  <strong>{DEVELOPER_ACCOUNT_NUMBER}</strong>
+                  {/* <span className="font-bold">CBE Account Number:</span>{" "}
+                  <strong>{DEVELOPER_ACCOUNT_NUMBER}</strong> */}
                 </small>
               </p>
               <p>
                 <small>
-                  <span className="font-bold">Telebirr phone number:</span>{" "}
-                  <strong>{TELEBIRR_PHONE_NUMBER}</strong>
+                  {/* <span className="font-bold">Phone number:</span>{" "} */}
+                  {/* <strong> */}
+                  {TELEBIRR_PHONE_NUMBER}
+                  {/* </strong> */}
                 </small>
               </p>
               <p>
                 <small>
-                  <span className="font-bold">Account Name:</span>{" "}
+                  {/* <span className="font-bold">Account Name:</span>{" "} */}
                   {DEVELOPER_ACCOUNT_NAME}
                 </small>
               </p>
