@@ -168,10 +168,10 @@ export default function Home() {
       className="min-h-screen bg-cover bg-center flex flex-col justify-center overflow-x-hidden"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <div className="min-h-screen bg-emerald-50/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center overflow-x-hidden font-extra-bold">
+      <div className="min-h-screen bg-emerald-50/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center  overflow-x-hidden font-extra-bold">
         <div className="w-full max-w-5xl mx-auto text-center">
           <div
-            className="backdrop-blur-xl shadow-xl py-5 px-3 md:px-5 mb-7 rounded-3xl bg-white/50"
+            className="backdrop-blur-xl shadow-xl py-5 px-3 md:px-5 mb-7 rounded-3xl bg-white/50 font-extrabold"
             style={{ backgroundColor: BRAND_DARKER }}
           >
             <h1
@@ -213,6 +213,16 @@ export default function Home() {
               >
                 ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት ቤተሰባዊ አንድነት
                 የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
+                <strong
+                  style={{
+                    color: BRAND_ACCENT,
+                    backgroundColor: "rgba(255, 255, 225, 0.82)",
+                  }}
+                >
+                  {" "}
+                  ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም መሆኑን
+                  በመገንዘብ፤{" "}
+                </strong>
               </h2>
               <div
                 className="text-yellow-800 text-base md:text-lg px-4 py-5 rounded-[30px] font-medium leading-relaxed border border-emerald-100"
@@ -262,8 +272,9 @@ export default function Home() {
                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
                 style={{ color: BRAND_DARK }}
               >
-                በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን የተሳትፎ ምዝገባ ቅጽ ይሙሉ
-                የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
+                በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "}
+                <em> ጉባኤው ላይ ለመገኘት በዚህ ቅጽ ይሙሉ </em>የሚለውን በመንካት ተሳታፊነትዎን
+                እንዲያረጋግጡልን እንጠይቃለን።
               </h2>
 
               <h5 className="text-green-700 font-bold place-items-center mb-4">
@@ -284,7 +295,7 @@ export default function Home() {
                 style={{ color: BRAND_ACCENT }}
               >
                 {/* የምዝገባ ቅጽ ዝግ ነው / Registration Form is Closed */}
-                የተሳትፎ ምዝገባ ቅጽ ይሙሉ
+                ጉባኤው ላይ ለመገኘት በዚህ ቅጽ ይሙሉ
               </button>
 
               <div className="mt-6 text-center text-extra-bold">
