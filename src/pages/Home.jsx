@@ -175,7 +175,7 @@ export default function Home() {
             style={{ backgroundColor: BRAND_DARKER }}
           >
             <h1
-              className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-tight"
+              className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-snug "
               style={{ color: BRAND_ACCENT }}
             >
               <strong>
