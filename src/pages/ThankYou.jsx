@@ -93,7 +93,9 @@
 // }
 import back from "../assets/home.png";
 import closedZK from "../assets/closedZK.jpg";
-import buyMeCoffee from "../assets/buyMeCoffee.gif";
+// import buyMeCoffee from "../assets/buyMeCoffee.gif";
+import subscribe from "../assets/subscribe.gif";
+import subscribeM from "../assets/subscribeM.gif";
 const BRAND_DARK = "#00313c";
 const BRAND_DARKER = "#022e38";
 const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
@@ -157,20 +159,27 @@ export default function NoEvent() {
           </h2> */}
           <div className="rounded-2xl bg-emerald-50 ">
             <h3 className="font-extrabold text-yellow-800 text-lg mb-3">
-              <img
-                src={buyMeCoffee}
-                alt="Click On "
-                srcSet=""
-                className="w-20 h-16 mx-6 rounded-full items-center"
-              />{" "}
-              <small>
-                ይህን ሲስተም የሰራውን ሰው ቡና ይጋብዙት | By a Coffee for the Developer
-              </small>
+              <a
+                href="https://www.youtube.com/@MuluTilaCodeCamp"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <small>
+                  ይህን ሲስተም የሰራውን ሰው ቻነል ሰብስክራይብ ያድርጉ| Subscribe the Developer's
+                  Youtube channel
+                </small>
+                <img
+                  src={subscribe}
+                  alt="Click On "
+                  srcSet=""
+                  className="w-60 h-20 mx-6 rounded-full items-center"
+                />{" "}
+              </a>
             </h3>
             <p className="text-sm text-gray-700 leading-relaxed">
               <small>
-                ፈቃደኛ ከሆኑ ይህን ሲስተም የሰራውን ሰው ቡና ይጋብዙት | If you are volunteer Buy a
-                Coffee for this system developer.
+                ይህን ሲስተም የሰራውን ዩቱብ ቻነል ሰብስክራይብ ያድርጉ | Please subscribe the
+                developer's Youtube channel.
               </small>
             </p>
 
@@ -181,10 +190,24 @@ export default function NoEvent() {
                   <strong>{DEVELOPER_ACCOUNT_NUMBER}</strong> */}
                 </small>
               </p>
+
+              <a
+                href="https://www.youtube.com/@MuluTilaCodeCamp"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={subscribeM}
+                  alt="Subscribe"
+                  className="w-60 h-20 mx-6 rounded-full items-center"
+                />
+              </a>
               <p>
+                or Buy me a coffee &nbsp;
                 <small>
                   {/* <span className="font-bold">Phone number:</span>{" "} */}
                   {/* <strong> */}
+
                   {TELEBIRR_PHONE_NUMBER}
                   {/* </strong> */}
                 </small>
