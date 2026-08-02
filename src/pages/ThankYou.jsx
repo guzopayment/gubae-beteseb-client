@@ -203,7 +203,9 @@ export default function NoEvent() {
                 />
               </a>
               <p>
-                or Buy me a coffee &nbsp;
+                or{" "}
+                <strong style={{ color: BRAND_ACCENT }}>Buy me a coffee</strong>{" "}
+                &nbsp;
                 <small>
                   {/* <span className="font-bold">Phone number:</span>{" "} */}
                   {/* <strong> */}
