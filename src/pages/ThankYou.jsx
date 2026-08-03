@@ -167,10 +167,9 @@ export default function NoEvent() {
                 <small>
                   {" "}
                   <strong style={{ color: BRAND_DARKER }}>
-                    እባክዎ ይህን ሲስተም የሰራውን ሰው
+                    ይህን ሲስተም የሰራውን ሰው
                   </strong>{" "}
-                  ቻነል ሰብስክራይብ ያድርጉ| Please Subscribe the Developer's Youtube
-                  channel
+                  ቻነል ሰብስክራይብ ያድርጉ | Subscribe the Developer's Youtube channel
                 </small>
                 <img
                   src={subscribe}
