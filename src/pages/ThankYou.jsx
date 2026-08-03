@@ -165,6 +165,8 @@ export default function NoEvent() {
                 rel="noopener noreferrer"
               >
                 <small>
+                  {" "}
+                  <strong style={{ color: BRAND_ACCENT }}> ሲስተሙን ከወደዱት </strong>
                   ይህን ሲስተም የሰራውን ሰው ቻነል ሰብስክራይብ ያድርጉ| Subscribe the Developer's
                   Youtube channel
                 </small>
