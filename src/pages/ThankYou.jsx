@@ -166,7 +166,7 @@ export default function NoEvent() {
               >
                 <small>
                   {" "}
-                  <strong style={{ color: BRAND_ACCENT }}> ሲስተሙን ከወደዱት </strong>
+                  <strong style={{ color: BRAND_ACCENT }}> ስለመልካምነትዎ </strong>
                   ይህን ሲስተም የሰራውን ሰው ቻነል ሰብስክራይብ ያድርጉ| Subscribe the Developer's
                   Youtube channel
                 </small>
