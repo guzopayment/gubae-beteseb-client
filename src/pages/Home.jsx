@@ -279,8 +279,10 @@ export default function Home() {
                 style={{ color: BRAND_DARK }}
               >
                 በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "}
-                <em style={{ color: BRAND_ACCENT }}>  ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>የሚለውን በመንካት ተሳታፊነትዎን
-                እንዲያረጋግጡልን እንጠይቃለን።
+                <small style={{ color: BRAND_ACCENT }}>
+                  <em> ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>
+                </small>
+                የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
               </h2>
 
               <h5 className="text-green-700 font-bold place-items-center mb-4">
