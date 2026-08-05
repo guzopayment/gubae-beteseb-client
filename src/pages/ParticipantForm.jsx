@@ -520,7 +520,7 @@ export default function BookingForm() {
             className="text-2xl md:text-3xl font-extrabold mb-4 text-center text-emerald-700"
             style={{ color: BRAND_DARKER }}
           >
-            ለጉባኤ ቤተሰብ ለብሥራት ጉባኤው ላይ ለመገኘት የሚሞላ ቅጽ
+            ለጉባኤ ቤተሰብ ለብሥራት ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ የሚሞላ ቅጽ
           </h2>
 
           <p className="text-center text-gray-500 mb-6">

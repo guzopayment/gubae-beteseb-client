@@ -279,7 +279,7 @@ export default function Home() {
                 style={{ color: BRAND_DARK }}
               >
                 በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "}
-                <em> ጉባኤው ላይ ለመገኘት በዚህ ቅጽ ይሙሉ </em>የሚለውን በመንካት ተሳታፊነትዎን
+                <em style={{ color: BRAND_ACCENT }}>  ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>የሚለውን በመንካት ተሳታፊነትዎን
                 እንዲያረጋግጡልን እንጠይቃለን።
               </h2>
 
@@ -301,7 +301,7 @@ export default function Home() {
                 style={{ color: BRAND_ACCENT }}
               >
                 {/* የምዝገባ ቅጽ ዝግ ነው / Registration Form is Closed */}
-                ጉባኤው ላይ ለመገኘት በዚህ ቅጽ ይሙሉ
+                ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ
               </button>
 
               <div className="mt-6 text-center text-extra-bold">
