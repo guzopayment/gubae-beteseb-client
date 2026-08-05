@@ -222,11 +222,14 @@ export default function Home() {
                   {" "}
                   <br></br>
                   <small>
-                    {" "}
-                    <em>
-                      ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
-                      መሆኑን በመገንዘብ፤{" "}
-                    </em>
+                    <small>
+                      {/* <small> */}{" "}
+                      <em>
+                        ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
+                        መሆኑን በመገንዘብ፤{" "}
+                      </em>
+                      {/* </small> */}
+                    </small>
                   </small>
                 </strong>
               </h2>
@@ -234,29 +237,29 @@ export default function Home() {
                 className="text-yellow-800 text-base md:text-lg px-4 py-5 rounded-[30px] font-medium leading-relaxed border border-emerald-100"
                 style={{ backgroundColor: "rgba(255, 255, 255, 0.82)" }}
               >
-                <p className="font-bold mb-3">
-                  {/* የጉዞ ተሳትፎ ዋጋ በአንድ ሰው 800 ብር ነው። በአስተባባሪዎች ከተነገራችሁ ከሚከተሉት ኦፊሴላዊ
+                {/*<p className="font-bold mb-3">
+                   የጉዞ ተሳትፎ ዋጋ በአንድ ሰው 800 ብር ነው። በአስተባባሪዎች ከተነገራችሁ ከሚከተሉት ኦፊሴላዊ
                   የምዝገባ ማስረጃ ሂሳቦች አንዱን ይጠቀሙና ያከናውኑ። ከዚያም ፦ 
-                  ጉዞው ዛሬ ሰኔ ሃያ ስምንት እንደ እግዚአብሔር ፍቃድ ይከናወናል። ስለሆነም፦*/}
-                </p>
-                <h3 className="font-extrabold text-yellow-800 text-lg mb-3">
-                  {/* <img
+                  ጉዞው ዛሬ ሰኔ ሃያ ስምንት እንደ እግዚአብሔር ፍቃድ ይከናወናል። ስለሆነም፦
+                </p>*/}
+                {/*<h3 className="font-extrabold text-yellow-800 text-lg mb-3">
+                   <img
                     src={cautionImage}
                     alt="Click On "
                     srcSet=""
                     className=" w-240 h-180 mx-6 rounded-s-md "
                   />
                   ቲኬት ሽያጭ አብቅቷል። ስለተሳተፍ እናመሰግናለን | Ticket sales are closed.
-                  Thank you for your participation. */}
-                </h3>
-                <h2 className="mt-3">
+                  Thank you for your participation. 
+                </h3>*/}
+                {/* <h2 className="mt-3">
                   <strong>
-                    {" "}
-                    {/* በመሆኑም እርስዎ ለዚህ ታላቅ ጉቤ የሚገኙ መሆንዎን ከታች ያለውን የምዝገባ ቅጽ ይሙሉ የሚለውን */}
-                  </strong>
-                  {/* Official account holder name:{" "} */}
-                  {/* <strong>Tewodros Sahile and Elsa Fantahun</strong> */}
-                </h2>
+                    {" "} */}
+                {/* በመሆኑም እርስዎ ለዚህ ታላቅ ጉቤ የሚገኙ መሆንዎን ከታች ያለውን የምዝገባ ቅጽ ይሙሉ የሚለውን */}
+                {/* </strong> */}
+                {/* Official account holder name:{" "} */}
+                {/* <strong>Tewodros Sahile and Elsa Fantahun</strong> */}
+                {/* </h2> */}
                 <p
                   className="mt-3 text-extra-sm  md:text-extra-sm text-gray-700"
                   style={{ color: BRAND_DARK }}
