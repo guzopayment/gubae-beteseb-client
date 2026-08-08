@@ -172,17 +172,23 @@ export default function NoEvent() {
                   ቻነል ሰብስክራይብ ያድርጉ | Subscribe the Developer's Youtube channel
                 </small>
                 <img
-                  src={subscribe}
+                  src={subscribeM}
                   alt="Click On "
                   srcSet=""
                   className="w-60 h-20 mx-6 rounded-full items-center"
                 />{" "}
               </a>
             </h3>
-            <p className="text-sm text-gray-700 leading-relaxed">
+            <p
+              className="text-sm text-gray-700 leading-relaxed"
+              style={{ color: BRAND_DARKER }}
+            >
               <small>
-                ይህን ሲስተም የሰራውን ዩቱብ ቻነል ሰብስክራይብ ያድርጉ | Please subscribe the
-                developer's Youtube channel.
+                {" "}
+                <small>
+                  ይህን ሲስተም የሰራውን ዩቱብ ቻነል ሰብስክራይብ ያድርጉ፣ በነጻ ነው | Please subscribe
+                  the developer's Youtube channel. It's free!
+                </small>
               </small>
             </p>
 
@@ -200,7 +206,7 @@ export default function NoEvent() {
                 rel="noopener noreferrer"
               >
                 <img
-                  src={subscribeM}
+                  src={subscribe}
                   alt="Subscribe"
                   className="w-60 h-20 mx-6 rounded-full items-center"
                 />

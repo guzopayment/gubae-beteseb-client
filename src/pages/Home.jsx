@@ -223,7 +223,9 @@ export default function Home() {
                   <br></br>
                   <small>
                     <small>
-                      {/* <small> */}{" "}
+                      {/* <small>+
+                      
+                      */}{" "}
                       <em>
                         ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
                         መሆኑን በመገንዘብ፤{" "}
@@ -262,16 +264,22 @@ export default function Home() {
                 {/* </h2> */}
                 <p
                   className="mt-3 text-extra-sm  md:text-extra-sm text-gray-700"
-                  style={{ color: BRAND_DARK }}
+                  style={{
+                    color: BRAND_DARK,
+                    backgroundColor: "rgba(255, 255, 255, 0.82)",
+                  }}
                 >
                   <em>
-                    {" "}
                     <small>
                       <small>
-                        {" "}
-                        ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም የመተግበሪያ ማውረጃ አይጠይቅም።
-                        This site never asks for passwords, card numbers, PIN
-                        codes, or software downloads.{" "}
+                        <small>
+                          <small>
+                            ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም የመተግበሪያ ማውረጃ አይጠይቅም።
+                            This site never asks for passwords, card numbers,
+                            PIN codes, or software downloads. codes, or software
+                            downloads.
+                          </small>
+                        </small>
                       </small>
                     </small>
                   </em>
