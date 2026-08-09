@@ -167,9 +167,11 @@ export default function NoEvent() {
                 <small>
                   {" "}
                   <strong style={{ color: BRAND_DARKER }}>
-                    ይህን ሲስተም የሰራውን ሰው
+                    ይህን ሲስተም የሰራውን ሰው{" "}
+                    <strong>ለማበረታታት እና ለማገዝ ከታች CLICK-HERE የሚለውን በመንካት </strong>
                   </strong>{" "}
-                  ቻነል ሰብስክራይብ ያድርጉ | Subscribe the Developer's Youtube channel
+                  ዩቱብ ቻነሉን ሰብስክራይብ ያድርጉ | To support please Subscribe the
+                  Developer's Youtube channel
                 </small>
                 <img
                   src={subscribeM}
