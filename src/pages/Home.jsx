@@ -1,3 +1,493 @@
+// import { useEffect, useMemo, useRef, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import bgImage from "../assets/qineeSocialDeputs.jpg";
+// import clickOn from "../assets/clickOn.gif";
+// // import handThank from "../assets/handThank.gif";
+// import cautionImage from "../assets/caution.jpg";
+// import api from "../services/api";
+// import socket from "../socket";
+// import MessageModal from "../components/MessageModal";
+// import { ORGANIZATIONS } from "../constants/bookingOptions";
+// import {
+//   sanitizeAlphabeticInput,
+//   sanitizePhoneInput,
+//   buildStatusMessage,
+// } from "../utils/bookingValidation";
+
+// // function StatusBadge({ status }) {
+// //   const cls =
+// //     status === "Confirmed"
+// //       ? "bg-green-100 text-green-700"
+// //       : status === "Rejected"
+// //         ? "bg-red-100 text-red-700"
+// //         : "bg-yellow-100 text-yellow-700";
+
+// //   return (
+// //     <span className={`px-3 py-1 rounded-full text-xs font-bold ${cls}`}>
+// //       {status || "Pending"}
+// //     </span>
+// //   );
+// // }
+// // Brand palette
+// const BRAND_DARK = "#00313c";
+// const BRAND_DARKER = "#022e38";
+// const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
+
+// export default function Home() {
+//   const navigate = useNavigate();
+//   const [lookup, setLookup] = useState({
+//     name: "",
+//     phone: "",
+//     organization: "",
+//   });
+//   const [tooltip, setTooltip] = useState("");
+//   const [recentUpdates, setRecentUpdates] = useState([]);
+//   const [lookupResults, setLookupResults] = useState([]);
+//   const [checking, setChecking] = useState(false);
+//   const [modal, setModal] = useState({
+//     open: false,
+//     title: "",
+//     message: "",
+//     type: "info",
+//   });
+//   const scrollRef = useRef(null);
+//   const linkBase =
+//     "block w-full rounded-xl px-4 py-3 font-semibold transition cursor-pointer text-sm md:text-base";
+//   const linkInactive = "text-white hover:bg-white/10";
+//   const linkActiveStyle = { backgroundColor: "#ffffff", color: BRAND_DARK };
+
+//   const showModal = (title, message, type = "info") =>
+//     setModal({ open: true, title, message, type });
+
+//   const fetchRecentUpdates = async () => {
+//     try {
+//       const res = await api.get("/bookings/public/recent", {
+//         params: { limit: 16 },
+//       });
+//       const data = Array.isArray(res.data) ? res.data : [];
+//       setRecentUpdates(data);
+//     } catch (error) {
+//       console.error(
+//         "Recent updates error:",
+//         error.response?.data || error.message,
+//       );
+//       setRecentUpdates([]);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchRecentUpdates();
+//   }, []);
+
+//   useEffect(() => {
+//     const onBookingUpdate = () => fetchRecentUpdates();
+//     socket.on("bookingStatusUpdated", onBookingUpdate);
+//     socket.on("newBooking", onBookingUpdate);
+//     return () => {
+//       socket.off("bookingStatusUpdated", onBookingUpdate);
+//       socket.off("newBooking", onBookingUpdate);
+//     };
+//   }, []);
+
+//   useEffect(() => {
+//     if (!tooltip) return undefined;
+//     const timer = setTimeout(() => setTooltip(""), 2000);
+//     return () => clearTimeout(timer);
+//   }, [tooltip]);
+
+//   useEffect(() => {
+//     const container = scrollRef.current;
+//     if (!container || recentUpdates.length <= 1) return undefined;
+
+//     const interval = setInterval(() => {
+//       const half = container.scrollHeight / 2;
+//       if (container.scrollTop >= half) {
+//         container.scrollTop = 0;
+//       } else {
+//         container.scrollTop += 1;
+//       }
+//     }, 35);
+
+//     return () => clearInterval(interval);
+//   }, [recentUpdates]);
+
+//   const handleNameChange = (value) => {
+//     const sanitized = sanitizeAlphabeticInput(value);
+//     if (value !== sanitized) setTooltip("ስም ፊደላትን እና ክፍተትን ብቻ ይቀበላል።");
+//     setLookup((prev) => ({ ...prev, name: sanitized }));
+//   };
+
+//   const handlePhoneChange = (value) => {
+//     const sanitized = sanitizePhoneInput(value);
+//     if (value !== sanitized)
+//       setTooltip("ስልክ ቁጥር ቁጥሮችን ብቻ ይቀበላል፤ ከ10 ዲጂት መብለጥ አይችልም።");
+//     setLookup((prev) => ({ ...prev, phone: sanitized }));
+//   };
+
+//   // const checkStatus = async () => {
+//   //   if (
+//   //     !lookup.name.trim() &&
+//   //     !lookup.phone.trim() &&
+//   //     !lookup.organization.trim()
+//   //   ) {
+//   //     showModal(
+//   //       "ማስጠንቀቂያ",
+//   //       "የሁኔታ ምርመራ ለማድረግ እባክዎ ስም፣ ስልክ ወይም ድርጅት ያስገቡ።",
+//   //       "error",
+//   //     );
+//   //     return;
+//   //   }
+
+//   //   try {
+//   //     setChecking(true);
+//   //     const res = await api.get("/bookings/public/status", { params: lookup });
+//   //     const data = Array.isArray(res.data) ? res.data : [];
+//   //     setLookupResults(data);
+//   //     if (!data.length) {
+//   //       showModal("ማስጠንቀቂያ", "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።", "error");
+//   //     }
+//   //   } catch (error) {
+//   //     setLookupResults([]);
+//   //     showModal(
+//   //       "ማስጠንቀቂያ",
+//   //       error.response?.data?.message || "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።",
+//   //       "error",
+//   //     );
+//   //   } finally {
+//   //     setChecking(false);
+//   //   }
+//   // };
+
+//   // const duplicatedUpdates = useMemo(() => {
+//   //   if (!recentUpdates.length) return [];
+//   //   return [...recentUpdates, ...recentUpdates];
+//   // }, [recentUpdates]);
+
+//   return (
+//     <div
+//       className="min-h-screen bg-cover bg-center flex flex-col justify-center overflow-x-hidden"
+//       style={{ backgroundImage: `url(${bgImage})` }}
+//     >
+//       <div className="min-h-screen bg-emerald-50/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center  overflow-x-hidden font-extra-bold">
+//         <div className="w-full max-w-5xl mx-auto text-center">
+//           <div
+//             className="backdrop-blur-xl shadow-xl py-5 px-3 md:px-5 mb-7 rounded-3xl bg-white/50 font-extrabold"
+//             style={{ backgroundColor: BRAND_DARKER }}
+//           >
+//             <h1
+//               className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-snug "
+//               style={{ color: BRAND_ACCENT }}
+//             >
+//               <strong>
+//                 <strong>
+//                   {/* የዝክረ ቅዱሳን ጉዞ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ኦፊሴላዊ የምዝገባ እና
+//                 የማረጋገጫ ገጽ */}
+//                   ጉባኤ ቤተሰብ ለብሥራት <br />
+//                   ነሐሴ 19/2018ዓም
+//                 </strong>
+//               </strong>
+//             </h1>
+//             <p
+//               className="mt-4 text-lg md:text-2xl text-emerald-700 font-semibold"
+//               style={{ color: "white" }}
+//             >
+//               {/* Official registration and confirmation page for the Zikre Kidusan
+//               trip to Menagesha Garaw Medhanealem Unity Monastery. */}
+//               <em>
+//                 {" "}
+//                 ቤተሰባዊ አንድነት የሚጠነክርበት <br /> ታላቅ ቀን!!!
+//               </em>
+//             </p>
+//             <p className="mt-3 text-sm md:text-base text-gray-600 leading-relaxed">
+//               {/* ይህ ገጽ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ተሳታፊዎች የምዝገባ መረጃ ለማስገባትና ሁኔታ
+//               ለመከታተል የተዘጋጀ ኦፊሴላዊ ገጽ ነው። This page is used only for official
+//               participant registration details and status follow-up. */}
+//             </p>
+//           </div>
+
+//           <div className="flex justify-center items-center mb-8">
+//             <div className="w-full max-w-3xl">
+//               <h2
+//                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
+//                 style={{ color: BRAND_DARK }}
+//               >
+//                 ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት ቤተሰባዊ አንድነት
+//                 የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
+//                 <strong
+//                   style={{
+//                     color: BRAND_ACCENT,
+//                     backgroundColor: "rgba(255, 255, 225, 0.82)",
+//                   }}
+//                 >
+//                   {" "}
+//                   <br></br>
+//                   <small>
+//                     <small>
+//                       {/* <small>+
+                      
+//                       */}{" "}
+//                       <em>
+//                         ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
+//                         መሆኑን በመገንዘብ፤{" "}
+//                       </em>
+//                       {/* </small> */}
+//                     </small>
+//                   </small>
+//                 </strong>
+//               </h2>
+//               <div
+//                 className="text-yellow-800 text-base md:text-lg px-4 py-5 rounded-[30px] font-medium leading-relaxed border border-emerald-100"
+//                 style={{ backgroundColor: "rgba(255, 255, 255, 0.82)" }}
+//               >
+//                 {/*<p className="font-bold mb-3">
+//                    የጉዞ ተሳትፎ ዋጋ በአንድ ሰው 800 ብር ነው። በአስተባባሪዎች ከተነገራችሁ ከሚከተሉት ኦፊሴላዊ
+//                   የምዝገባ ማስረጃ ሂሳቦች አንዱን ይጠቀሙና ያከናውኑ። ከዚያም ፦ 
+//                   ጉዞው ዛሬ ሰኔ ሃያ ስምንት እንደ እግዚአብሔር ፍቃድ ይከናወናል። ስለሆነም፦
+//                 </p>*/}
+//                 {/*<h3 className="font-extrabold text-yellow-800 text-lg mb-3">
+//                    <img
+//                     src={cautionImage}
+//                     alt="Click On "
+//                     srcSet=""
+//                     className=" w-240 h-180 mx-6 rounded-s-md "
+//                   />
+//                   ቲኬት ሽያጭ አብቅቷል። ስለተሳተፍ እናመሰግናለን | Ticket sales are closed.
+//                   Thank you for your participation. 
+//                 </h3>*/}
+//                 {/* <h2 className="mt-3">
+//                   <strong>
+//                     {" "} */}
+//                 {/* በመሆኑም እርስዎ ለዚህ ታላቅ ጉቤ የሚገኙ መሆንዎን ከታች ያለውን የምዝገባ ቅጽ ይሙሉ የሚለውን */}
+//                 {/* </strong> */}
+//                 {/* Official account holder name:{" "} */}
+//                 {/* <strong>Tewodros Sahile and Elsa Fantahun</strong> */}
+//                 {/* </h2> */}
+//                 <p
+//                   className="mt-3 text-extra-sm  md:text-extra-sm text-gray-700"
+//                   style={{
+//                     color: BRAND_DARK,
+//                     backgroundColor: "rgba(255, 255, 255, 0.82)",
+//                   }}
+//                 >
+//                   <em>
+//                     <small>
+//                       <small>
+//                         <small>
+//                           <small>
+//                             ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም የመተግበሪያ ማውረጃ አይጠይቅም።
+//                             This site never asks for passwords, card numbers,
+//                             PIN codes, or software downloads. codes, or software
+//                             downloads.
+//                           </small>
+//                         </small>
+//                       </small>
+//                     </small>
+//                   </em>
+//                 </p>
+//               </div>
+//               <h2
+//                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
+//                 style={{ color: BRAND_DARK }}
+//               >
+//                 በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "}
+//                 <small style={{ color: BRAND_ACCENT }}>
+//                   <em> ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>
+//                 </small>
+//                 የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
+//               </h2>
+
+//               <h5 className="text-green-700 font-bold place-items-center mb-4">
+//                 {/* የምዝገባ ቅጽ መሙላት አብቅቷል። ስለተሳተፍ እናመሰግናለን / Registration Form
+//                 submission is closed. Thank you for your participation. */}
+//                 <img
+//                   src={clickOn}
+//                   // src={handThank}
+//                   alt="Open registration form"
+//                   className="w-20 h-20 md:w-24 md:h-24 mx-auto"
+//                 />
+//               </h5>
+//               <button
+//                 onClick={() => navigate("/submit")}
+//                 // onClick={() => navigate("/thank-you ")}
+//                 // onClick={() => navigate("/no-event")}
+//                 className="bg-gradient-to-r from-green-950 to-emerald-950 text-white text-lg md:text-3xl px-8 md:px-16 py-5 md:py-7 rounded-[30px] shadow-lg hover:scale-105 hover:from-emerald-800 hover:to-emerald-950 transition duration-300 border border-white/30 w-full"
+//                 style={{ color: BRAND_ACCENT }}
+//               >
+//                 {/* የምዝገባ ቅጽ ዝግ ነው / Registration Form is Closed */}
+//                 ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ
+//               </button>
+
+//               <div className="mt-6 text-center text-extra-bold">
+//                 {" "}
+//                 {/* <p className="mt-4 text-bold md:text-base text-blue-900 leading-relaxed">
+//                   <strong>ለበለጠ መረጃ </strong> <br></br> 📞 0994181826 <br></br>{" "}
+//                   📞 0913446530 <br></br> 📞 0911282341
+//                 </p> */}
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* <div className="w-full max-w-4xl mx-auto bg-white/80 rounded-3xl shadow-xl p-5 md:p-6 mb-8 text-left">
+//             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+//               <h3 className="text-xl font-bold text-emerald-700">
+//                 የምዝገባ ሁኔታ ይፈትሹ | Check Registration Status
+//               </h3>
+//               <p className="text-sm text-gray-500">
+//                 ስም፣ ስልክ ወይም ድርጅት በመጠቀም የምዝገባዎን ሁኔታ ይፈትሹ። | Search by full name,
+//                 phone number, or organization.
+//               </p>
+//             </div>
+
+//             {tooltip ? (
+//               <p className="mb-3 text-sm text-red-500 font-medium">{tooltip}</p>
+//             ) : null}
+
+//             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+//               <input
+//                 value={lookup.name}
+//                 onChange={(e) => handleNameChange(e.target.value)}
+//                 placeholder="Full name / ሙሉ ስም"
+//                 className="w-full bg-white rounded-2xl px-4 py-3 shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+//               />
+//               <input
+//                 value={lookup.phone}
+//                 onChange={(e) => handlePhoneChange(e.target.value)}
+//                 placeholder="Phone number / ስልክ ቁጥር"
+//                 inputMode="numeric"
+//                 className="w-full bg-white rounded-2xl px-4 py-3 shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+//               />
+//               <select
+//                 value={lookup.organization}
+//                 onChange={(e) =>
+//                   setLookup((prev) => ({
+//                     ...prev,
+//                     organization: e.target.value,
+//                   }))
+//                 }
+//                 className="w-full bg-white rounded-2xl px-4 py-3 shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
+//               >
+//                 <option value="">Organization / ድርጅት</option>
+//                 {ORGANIZATIONS.map((org) => (
+//                   <option key={org} value={org}>
+//                     {org}
+//                   </option>
+//                 ))}
+//               </select>
+//             </div>
+
+//             <div className="flex flex-wrap gap-3">
+//               <button
+//                 onClick={checkStatus}
+//                 disabled={checking}
+//                 className="bg-emerald-800 text-white px-6 py-3 rounded-2xl font-bold hover:bg-emerald-900 transition disabled:opacity-60"
+//               >
+//                 {checking ? "እባክዎ ይጠብቁ... Checking..." : "Check Status"}
+//               </button>
+//               <button
+//                 onClick={() => {
+//                   setLookup({ name: "", phone: "", organization: "" });
+//                   setLookupResults([]);
+//                 }}
+//                 className="bg-gray-200 text-gray-700 px-6 py-3 rounded-2xl font-bold hover:bg-gray-300 transition"
+//               >
+//                 Clear
+//               </button>
+//             </div>
+//           </div>
+
+//           {lookupResults.length > 0 && (
+//             <div className="w-full max-w-4xl mx-auto bg-white/85 rounded-3xl shadow-xl p-5 md:p-6 mb-8 text-left">
+//               <h3 className="text-2xl font-bold text-emerald-700 mb-4">
+//                 የምዝገባ ሁኔታ ውጤት | Registration Status Result
+//               </h3>
+//               <div className="space-y-4">
+//                 {lookupResults.map((item) => (
+//                   <div
+//                     key={item._id}
+//                     className="rounded-2xl border border-emerald-100 bg-white p-4 md:p-5 shadow-sm"
+//                   >
+//                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2">
+//                       <div>
+//                         <h4 className="text-lg font-bold text-emerald-700">
+//                           {item.name}
+//                         </h4>
+//                         <p className="text-sm text-gray-500">
+//                           {item.organization} • {item.phone} •{" "}
+//                           {item.subCity || "—"}
+//                         </p>
+//                       </div>
+//                       <StatusBadge status={item.status} />
+//                     </div>
+//                     <p className="text-gray-700 leading-relaxed">
+//                       {item.message || buildStatusMessage(item.status)}
+//                     </p>
+//                     <p className="text-xs text-gray-400 mt-2">
+//                       Updated: {new Date(item.updatedAt).toLocaleString()}
+//                     </p>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           )} 
+//              <div className="w-full max-w-4xl mx-auto bg-white/85 rounded-3xl shadow-xl p-5 md:p-6 text-left">
+//             <h3 className="text-2xl font-bold text-emerald-700 mb-4">
+//               በቅርብ ጊዜ የተዘመኑ የምዝገባ ሁኔታዎች | Recent Registration Updates
+//             </h3>
+//             <div
+//               ref={scrollRef}
+//               className="h-[280px] overflow-hidden relative rounded-2xl"
+//             >
+//               <div className="space-y-4 pb-4">
+//                 {duplicatedUpdates.length ? (
+//                   duplicatedUpdates.map((item, index) => (
+//                     <div
+//                       key={`${item._id}-${index}`}
+//                       className="rounded-2xl border border-emerald-100 bg-white p-4 md:p-5 shadow-sm"
+//                     >
+//                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2">
+//                         <div>
+//                           <h4 className="text-lg font-bold text-emerald-700">
+//                             {item.name}
+//                           </h4>
+//                           <p className="text-sm text-gray-500">
+//                             {item.organization} • {item.phone} •{" "}
+//                             {item.subCity || "—"}
+//                           </p>
+//                         </div>
+//                         <StatusBadge status={item.status} />
+//                       </div>
+//                       <p className="text-gray-700">
+//                         {item.message || buildStatusMessage(item.status)}
+//                       </p>
+//                       <p className="text-xs text-gray-400 mt-2">
+//                         Updated: {new Date(item.updatedAt).toLocaleString()}
+//                       </p>
+//                     </div>
+//                   ))
+//                 ) : (
+//                   <div className="rounded-2xl border border-emerald-100 bg-white p-6 text-center text-gray-500 shadow-sm">
+//                     ምንም አይነት የቅርብ ጊዜ የምዝገባ ዝመናዎች የሉም | No recent registration
+//                     updates yet.
+//                   </div>
+//                 )}
+//               </div>
+//             </div>
+//           </div> */}
+//         </div>
+//       </div>
+
+//       <MessageModal
+//         open={modal.open}
+//         title={modal.title}
+//         message={modal.message}
+//         type={modal.type}
+//         onClose={() => setModal((prev) => ({ ...prev, open: false }))}
+//       />
+//     </div>
+//   );
+// }
+
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/qineeSocialDeputs.jpg";
@@ -14,56 +504,199 @@ import {
   buildStatusMessage,
 } from "../utils/bookingValidation";
 
-// function StatusBadge({ status }) {
-//   const cls =
-//     status === "Confirmed"
-//       ? "bg-green-100 text-green-700"
-//       : status === "Rejected"
-//         ? "bg-red-100 text-red-700"
-//         : "bg-yellow-100 text-yellow-700";
-
-//   return (
-//     <span className={`px-3 py-1 rounded-full text-xs font-bold ${cls}`}>
-//       {status || "Pending"}
-//     </span>
-//   );
-// }
 // Brand palette
 const BRAND_DARK = "#00313c";
 const BRAND_DARKER = "#022e38";
-const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
+const BRAND_ACCENT = "#f2b134";
+
+// Countdown target:
+// August 25, 2026 at 11:59:59 PM Ethiopia time (UTC+3)
+const EVENT_END_DATE = new Date("2026-08-25T23:59:59+03:00");
+
+// Digital countdown component
+function CountdownTimer() {
+  const calculateRemaining = () => {
+    const difference = EVENT_END_DATE.getTime() - Date.now();
+
+    if (difference <= 0) {
+      return {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        finished: true,
+      };
+    }
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / (1000 * 60)) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+      finished: false,
+    };
+  };
+
+  const [remaining, setRemaining] = useState(calculateRemaining());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemaining(calculateRemaining());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const timeUnits = [
+    {
+      value: remaining.days,
+      amharic: "ቀናት",
+      english: "Days",
+    },
+    {
+      value: remaining.hours,
+      amharic: "ሰዓታት",
+      english: "Hours",
+    },
+    {
+      value: remaining.minutes,
+      amharic: "ደቂቃዎች",
+      english: "Minutes",
+    },
+    {
+      value: remaining.seconds,
+      amharic: "ሰከንዶች",
+      english: "Seconds",
+    },
+  ];
+
+  return (
+    <div className="w-full max-w-4xl mx-auto mb-8">
+      <div
+        className="relative overflow-hidden rounded-[30px] shadow-2xl border-2 p-5 md:p-7"
+        style={{
+          backgroundColor: BRAND_DARKER,
+          borderColor: BRAND_ACCENT,
+        }}
+      >
+        {/* Decorative glow */}
+        <div
+          className="absolute -top-20 -right-20 w-48 h-48 rounded-full opacity-10"
+          style={{ backgroundColor: BRAND_ACCENT }}
+        />
+
+        <div
+          className="absolute -bottom-20 -left-20 w-48 h-48 rounded-full opacity-10"
+          style={{ backgroundColor: BRAND_ACCENT }}
+        />
+
+        <div className="relative z-10 text-center">
+          <div className="text-3xl md:text-4xl mb-2">⏳</div>
+
+          <h2
+            className="text-xl md:text-3xl font-extrabold mb-2"
+            style={{ color: BRAND_ACCENT }}
+          >
+            ታላቁ ቀን ሊደርስ የቀረው ጊዜ
+          </h2>
+
+          <p className="text-white/90 text-sm md:text-base mb-5">
+            ነሐሴ 19/2018 ዓ.ም — August 25, 2026
+          </p>
+
+          <div className="grid grid-cols-4 gap-2 md:gap-5">
+            {timeUnits.map((unit) => (
+              <div
+                key={unit.english}
+                className="bg-white rounded-2xl p-3 md:p-5 shadow-lg"
+              >
+                <div
+                  className="text-2xl sm:text-3xl md:text-5xl font-black tracking-tight"
+                  style={{ color: BRAND_DARK }}
+                >
+                  {String(unit.value).padStart(2, "0")}
+                </div>
+
+                <div
+                  className="text-xs md:text-sm font-extrabold mt-1"
+                  style={{ color: BRAND_DARK }}
+                >
+                  {unit.amharic}
+                </div>
+
+                <div className="text-[9px] sm:text-[10px] md:text-xs text-gray-500">
+                  {unit.english}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {remaining.finished && (
+            <div
+              className="mt-5 rounded-2xl px-4 py-3 font-extrabold text-lg md:text-xl"
+              style={{
+                backgroundColor: BRAND_ACCENT,
+                color: BRAND_DARK,
+              }}
+            >
+              🎉 ታላቁ ቀን ደርሷል!
+              <br />
+              The great day has arrived!
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const navigate = useNavigate();
+
   const [lookup, setLookup] = useState({
     name: "",
     phone: "",
     organization: "",
   });
+
   const [tooltip, setTooltip] = useState("");
   const [recentUpdates, setRecentUpdates] = useState([]);
   const [lookupResults, setLookupResults] = useState([]);
   const [checking, setChecking] = useState(false);
+
   const [modal, setModal] = useState({
     open: false,
     title: "",
     message: "",
     type: "info",
   });
+
   const scrollRef = useRef(null);
+
   const linkBase =
     "block w-full rounded-xl px-4 py-3 font-semibold transition cursor-pointer text-sm md:text-base";
+
   const linkInactive = "text-white hover:bg-white/10";
-  const linkActiveStyle = { backgroundColor: "#ffffff", color: BRAND_DARK };
+
+  const linkActiveStyle = {
+    backgroundColor: "#ffffff",
+    color: BRAND_DARK,
+  };
 
   const showModal = (title, message, type = "info") =>
-    setModal({ open: true, title, message, type });
+    setModal({
+      open: true,
+      title,
+      message,
+      type,
+    });
 
   const fetchRecentUpdates = async () => {
     try {
       const res = await api.get("/bookings/public/recent", {
         params: { limit: 16 },
       });
+
       const data = Array.isArray(res.data) ? res.data : [];
       setRecentUpdates(data);
     } catch (error) {
@@ -71,6 +704,7 @@ export default function Home() {
         "Recent updates error:",
         error.response?.data || error.message,
       );
+
       setRecentUpdates([]);
     }
   };
@@ -81,8 +715,10 @@ export default function Home() {
 
   useEffect(() => {
     const onBookingUpdate = () => fetchRecentUpdates();
+
     socket.on("bookingStatusUpdated", onBookingUpdate);
     socket.on("newBooking", onBookingUpdate);
+
     return () => {
       socket.off("bookingStatusUpdated", onBookingUpdate);
       socket.off("newBooking", onBookingUpdate);
@@ -91,16 +727,22 @@ export default function Home() {
 
   useEffect(() => {
     if (!tooltip) return undefined;
+
     const timer = setTimeout(() => setTooltip(""), 2000);
+
     return () => clearTimeout(timer);
   }, [tooltip]);
 
   useEffect(() => {
     const container = scrollRef.current;
-    if (!container || recentUpdates.length <= 1) return undefined;
+
+    if (!container || recentUpdates.length <= 1) {
+      return undefined;
+    }
 
     const interval = setInterval(() => {
       const half = container.scrollHeight / 2;
+
       if (container.scrollTop >= half) {
         container.scrollTop = 0;
       } else {
@@ -113,97 +755,71 @@ export default function Home() {
 
   const handleNameChange = (value) => {
     const sanitized = sanitizeAlphabeticInput(value);
-    if (value !== sanitized) setTooltip("ስም ፊደላትን እና ክፍተትን ብቻ ይቀበላል።");
-    setLookup((prev) => ({ ...prev, name: sanitized }));
+
+    if (value !== sanitized) {
+      setTooltip("ስም ፊደላትን እና ክፍተትን ብቻ ይቀበላል።");
+    }
+
+    setLookup((prev) => ({
+      ...prev,
+      name: sanitized,
+    }));
   };
 
   const handlePhoneChange = (value) => {
     const sanitized = sanitizePhoneInput(value);
-    if (value !== sanitized)
-      setTooltip("ስልክ ቁጥር ቁጥሮችን ብቻ ይቀበላል፤ ከ10 ዲጂት መብለጥ አይችልም።");
-    setLookup((prev) => ({ ...prev, phone: sanitized }));
+
+    if (value !== sanitized) {
+      setTooltip(
+        "ስልክ ቁጥር ቁጥሮችን ብቻ ይቀበላል፤ ከ10 ዲጂት መብለጥ አይችልም።",
+      );
+    }
+
+    setLookup((prev) => ({
+      ...prev,
+      phone: sanitized,
+    }));
   };
-
-  // const checkStatus = async () => {
-  //   if (
-  //     !lookup.name.trim() &&
-  //     !lookup.phone.trim() &&
-  //     !lookup.organization.trim()
-  //   ) {
-  //     showModal(
-  //       "ማስጠንቀቂያ",
-  //       "የሁኔታ ምርመራ ለማድረግ እባክዎ ስም፣ ስልክ ወይም ድርጅት ያስገቡ።",
-  //       "error",
-  //     );
-  //     return;
-  //   }
-
-  //   try {
-  //     setChecking(true);
-  //     const res = await api.get("/bookings/public/status", { params: lookup });
-  //     const data = Array.isArray(res.data) ? res.data : [];
-  //     setLookupResults(data);
-  //     if (!data.length) {
-  //       showModal("ማስጠንቀቂያ", "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።", "error");
-  //     }
-  //   } catch (error) {
-  //     setLookupResults([]);
-  //     showModal(
-  //       "ማስጠንቀቂያ",
-  //       error.response?.data?.message || "በገባው መረጃ መሰረት ምንም ማስገባት አልተገኘም።",
-  //       "error",
-  //     );
-  //   } finally {
-  //     setChecking(false);
-  //   }
-  // };
-
-  // const duplicatedUpdates = useMemo(() => {
-  //   if (!recentUpdates.length) return [];
-  //   return [...recentUpdates, ...recentUpdates];
-  // }, [recentUpdates]);
 
   return (
     <div
       className="min-h-screen bg-cover bg-center flex flex-col justify-center overflow-x-hidden"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
-      <div className="min-h-screen bg-emerald-50/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center  overflow-x-hidden font-extra-bold">
+      <div className="min-h-screen bg-emerald-50/90 backdrop-blur-sm p-4 md:p-6 flex items-center justify-center overflow-x-hidden font-extra-bold">
         <div className="w-full max-w-5xl mx-auto text-center">
+          {/* Main Header */}
           <div
             className="backdrop-blur-xl shadow-xl py-5 px-3 md:px-5 mb-7 rounded-3xl bg-white/50 font-extrabold"
             style={{ backgroundColor: BRAND_DARKER }}
           >
             <h1
-              className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-snug "
+              className="text-xl md:text-4xl font-extrabold text-emerald-700 tracking-wide leading-snug"
               style={{ color: BRAND_ACCENT }}
             >
               <strong>
                 <strong>
-                  {/* የዝክረ ቅዱሳን ጉዞ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ኦፊሴላዊ የምዝገባ እና
-                የማረጋገጫ ገጽ */}
                   ጉባኤ ቤተሰብ ለብሥራት <br />
                   ነሐሴ 19/2018ዓም
                 </strong>
               </strong>
             </h1>
+
             <p
               className="mt-4 text-lg md:text-2xl text-emerald-700 font-semibold"
               style={{ color: "white" }}
             >
-              {/* Official registration and confirmation page for the Zikre Kidusan
-              trip to Menagesha Garaw Medhanealem Unity Monastery. */}
               <em>
                 {" "}
                 ቤተሰባዊ አንድነት የሚጠነክርበት <br /> ታላቅ ቀን!!!
               </em>
             </p>
-            <p className="mt-3 text-sm md:text-base text-gray-600 leading-relaxed">
-              {/* ይህ ገጽ ወደ መናገሻ ጋራው መድኃኔዓለም አንድነት ገዳም!! ተሳታፊዎች የምዝገባ መረጃ ለማስገባትና ሁኔታ
-              ለመከታተል የተዘጋጀ ኦፊሴላዊ ገጽ ነው። This page is used only for official
-              participant registration details and status follow-up. */}
-            </p>
+
+            <p className="mt-3 text-sm md:text-base text-gray-600 leading-relaxed"></p>
           </div>
+
+          {/* Countdown */}
+          <CountdownTimer />
 
           <div className="flex justify-center items-center mb-8">
             <div className="w-full max-w-3xl">
@@ -211,8 +827,9 @@ export default function Home() {
                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
                 style={{ color: BRAND_DARK }}
               >
-                ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት ቤተሰባዊ አንድነት
-                የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
+                ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት
+                ቤተሰባዊ አንድነት የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን
+                መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
                 <strong
                   style={{
                     color: BRAND_ACCENT,
@@ -220,50 +837,24 @@ export default function Home() {
                   }}
                 >
                   {" "}
-                  <br></br>
+                  <br />
                   <small>
                     <small>
-                      {/* <small>+
-                      
-                      */}{" "}
                       <em>
-                        ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
-                        መሆኑን በመገንዘብ፤{" "}
+                        ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ
+                        ክፍያ የሌለው እና የማይጠይቅም መሆኑን በመገንዘብ፤{" "}
                       </em>
-                      {/* </small> */}
                     </small>
                   </small>
                 </strong>
               </h2>
+
               <div
                 className="text-yellow-800 text-base md:text-lg px-4 py-5 rounded-[30px] font-medium leading-relaxed border border-emerald-100"
                 style={{ backgroundColor: "rgba(255, 255, 255, 0.82)" }}
               >
-                {/*<p className="font-bold mb-3">
-                   የጉዞ ተሳትፎ ዋጋ በአንድ ሰው 800 ብር ነው። በአስተባባሪዎች ከተነገራችሁ ከሚከተሉት ኦፊሴላዊ
-                  የምዝገባ ማስረጃ ሂሳቦች አንዱን ይጠቀሙና ያከናውኑ። ከዚያም ፦ 
-                  ጉዞው ዛሬ ሰኔ ሃያ ስምንት እንደ እግዚአብሔር ፍቃድ ይከናወናል። ስለሆነም፦
-                </p>*/}
-                {/*<h3 className="font-extrabold text-yellow-800 text-lg mb-3">
-                   <img
-                    src={cautionImage}
-                    alt="Click On "
-                    srcSet=""
-                    className=" w-240 h-180 mx-6 rounded-s-md "
-                  />
-                  ቲኬት ሽያጭ አብቅቷል። ስለተሳተፍ እናመሰግናለን | Ticket sales are closed.
-                  Thank you for your participation. 
-                </h3>*/}
-                {/* <h2 className="mt-3">
-                  <strong>
-                    {" "} */}
-                {/* በመሆኑም እርስዎ ለዚህ ታላቅ ጉቤ የሚገኙ መሆንዎን ከታች ያለውን የምዝገባ ቅጽ ይሙሉ የሚለውን */}
-                {/* </strong> */}
-                {/* Official account holder name:{" "} */}
-                {/* <strong>Tewodros Sahile and Elsa Fantahun</strong> */}
-                {/* </h2> */}
                 <p
-                  className="mt-3 text-extra-sm  md:text-extra-sm text-gray-700"
+                  className="mt-3 text-extra-sm md:text-extra-sm text-gray-700"
                   style={{
                     color: BRAND_DARK,
                     backgroundColor: "rgba(255, 255, 255, 0.82)",
@@ -274,9 +865,9 @@ export default function Home() {
                       <small>
                         <small>
                           <small>
-                            ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም የመተግበሪያ ማውረጃ አይጠይቅም።
-                            This site never asks for passwords, card numbers,
-                            PIN codes, or software downloads. codes, or software
+                            ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም
+                            የመተግበሪያ ማውረጃ አይጠይቅም። This site never asks
+                            for passwords, card numbers, PIN codes, or software
                             downloads.
                           </small>
                         </small>
@@ -285,194 +876,40 @@ export default function Home() {
                   </em>
                 </p>
               </div>
+
               <h2
                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
                 style={{ color: BRAND_DARK }}
               >
                 በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "}
                 <small style={{ color: BRAND_ACCENT }}>
-                  <em> ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>
+                  <em>
+                    {" "}
+                    ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ{" "}
+                  </em>
                 </small>
                 የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
               </h2>
 
               <h5 className="text-green-700 font-bold place-items-center mb-4">
-                {/* የምዝገባ ቅጽ መሙላት አብቅቷል። ስለተሳተፍ እናመሰግናለን / Registration Form
-                submission is closed. Thank you for your participation. */}
                 <img
                   src={clickOn}
-                  // src={handThank}
                   alt="Open registration form"
                   className="w-20 h-20 md:w-24 md:h-24 mx-auto"
                 />
               </h5>
+
               <button
                 onClick={() => navigate("/submit")}
-                // onClick={() => navigate("/thank-you ")}
-                // onClick={() => navigate("/no-event")}
                 className="bg-gradient-to-r from-green-950 to-emerald-950 text-white text-lg md:text-3xl px-8 md:px-16 py-5 md:py-7 rounded-[30px] shadow-lg hover:scale-105 hover:from-emerald-800 hover:to-emerald-950 transition duration-300 border border-white/30 w-full"
                 style={{ color: BRAND_ACCENT }}
               >
-                {/* የምዝገባ ቅጽ ዝግ ነው / Registration Form is Closed */}
                 ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ
               </button>
 
-              <div className="mt-6 text-center text-extra-bold">
-                {" "}
-                {/* <p className="mt-4 text-bold md:text-base text-blue-900 leading-relaxed">
-                  <strong>ለበለጠ መረጃ </strong> <br></br> 📞 0994181826 <br></br>{" "}
-                  📞 0913446530 <br></br> 📞 0911282341
-                </p> */}
-              </div>
+              <div className="mt-6 text-center text-extra-bold"></div>
             </div>
           </div>
-
-          {/* <div className="w-full max-w-4xl mx-auto bg-white/80 rounded-3xl shadow-xl p-5 md:p-6 mb-8 text-left">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
-              <h3 className="text-xl font-bold text-emerald-700">
-                የምዝገባ ሁኔታ ይፈትሹ | Check Registration Status
-              </h3>
-              <p className="text-sm text-gray-500">
-                ስም፣ ስልክ ወይም ድርጅት በመጠቀም የምዝገባዎን ሁኔታ ይፈትሹ። | Search by full name,
-                phone number, or organization.
-              </p>
-            </div>
-
-            {tooltip ? (
-              <p className="mb-3 text-sm text-red-500 font-medium">{tooltip}</p>
-            ) : null}
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
-              <input
-                value={lookup.name}
-                onChange={(e) => handleNameChange(e.target.value)}
-                placeholder="Full name / ሙሉ ስም"
-                className="w-full bg-white rounded-2xl px-4 py-3 shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              />
-              <input
-                value={lookup.phone}
-                onChange={(e) => handlePhoneChange(e.target.value)}
-                placeholder="Phone number / ስልክ ቁጥር"
-                inputMode="numeric"
-                className="w-full bg-white rounded-2xl px-4 py-3 shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              />
-              <select
-                value={lookup.organization}
-                onChange={(e) =>
-                  setLookup((prev) => ({
-                    ...prev,
-                    organization: e.target.value,
-                  }))
-                }
-                className="w-full bg-white rounded-2xl px-4 py-3 shadow border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-300"
-              >
-                <option value="">Organization / ድርጅት</option>
-                {ORGANIZATIONS.map((org) => (
-                  <option key={org} value={org}>
-                    {org}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <button
-                onClick={checkStatus}
-                disabled={checking}
-                className="bg-emerald-800 text-white px-6 py-3 rounded-2xl font-bold hover:bg-emerald-900 transition disabled:opacity-60"
-              >
-                {checking ? "እባክዎ ይጠብቁ... Checking..." : "Check Status"}
-              </button>
-              <button
-                onClick={() => {
-                  setLookup({ name: "", phone: "", organization: "" });
-                  setLookupResults([]);
-                }}
-                className="bg-gray-200 text-gray-700 px-6 py-3 rounded-2xl font-bold hover:bg-gray-300 transition"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-
-          {lookupResults.length > 0 && (
-            <div className="w-full max-w-4xl mx-auto bg-white/85 rounded-3xl shadow-xl p-5 md:p-6 mb-8 text-left">
-              <h3 className="text-2xl font-bold text-emerald-700 mb-4">
-                የምዝገባ ሁኔታ ውጤት | Registration Status Result
-              </h3>
-              <div className="space-y-4">
-                {lookupResults.map((item) => (
-                  <div
-                    key={item._id}
-                    className="rounded-2xl border border-emerald-100 bg-white p-4 md:p-5 shadow-sm"
-                  >
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2">
-                      <div>
-                        <h4 className="text-lg font-bold text-emerald-700">
-                          {item.name}
-                        </h4>
-                        <p className="text-sm text-gray-500">
-                          {item.organization} • {item.phone} •{" "}
-                          {item.subCity || "—"}
-                        </p>
-                      </div>
-                      <StatusBadge status={item.status} />
-                    </div>
-                    <p className="text-gray-700 leading-relaxed">
-                      {item.message || buildStatusMessage(item.status)}
-                    </p>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Updated: {new Date(item.updatedAt).toLocaleString()}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )} 
-             <div className="w-full max-w-4xl mx-auto bg-white/85 rounded-3xl shadow-xl p-5 md:p-6 text-left">
-            <h3 className="text-2xl font-bold text-emerald-700 mb-4">
-              በቅርብ ጊዜ የተዘመኑ የምዝገባ ሁኔታዎች | Recent Registration Updates
-            </h3>
-            <div
-              ref={scrollRef}
-              className="h-[280px] overflow-hidden relative rounded-2xl"
-            >
-              <div className="space-y-4 pb-4">
-                {duplicatedUpdates.length ? (
-                  duplicatedUpdates.map((item, index) => (
-                    <div
-                      key={`${item._id}-${index}`}
-                      className="rounded-2xl border border-emerald-100 bg-white p-4 md:p-5 shadow-sm"
-                    >
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-2">
-                        <div>
-                          <h4 className="text-lg font-bold text-emerald-700">
-                            {item.name}
-                          </h4>
-                          <p className="text-sm text-gray-500">
-                            {item.organization} • {item.phone} •{" "}
-                            {item.subCity || "—"}
-                          </p>
-                        </div>
-                        <StatusBadge status={item.status} />
-                      </div>
-                      <p className="text-gray-700">
-                        {item.message || buildStatusMessage(item.status)}
-                      </p>
-                      <p className="text-xs text-gray-400 mt-2">
-                        Updated: {new Date(item.updatedAt).toLocaleString()}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <div className="rounded-2xl border border-emerald-100 bg-white p-6 text-center text-gray-500 shadow-sm">
-                    ምንም አይነት የቅርብ ጊዜ የምዝገባ ዝመናዎች የሉም | No recent registration
-                    updates yet.
-                  </div>
-                )}
-              </div>
-            </div>
-          </div> */}
         </div>
       </div>
 
@@ -481,7 +918,12 @@ export default function Home() {
         title={modal.title}
         message={modal.message}
         type={modal.type}
-        onClose={() => setModal((prev) => ({ ...prev, open: false }))}
+        onClose={() =>
+          setModal((prev) => ({
+            ...prev,
+            open: false,
+          }))
+        }
       />
     </div>
   );
