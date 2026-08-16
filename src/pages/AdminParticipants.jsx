@@ -2388,6 +2388,15 @@ export default function AdminParticipants() {
   const [clearAllOpen, setClearAllOpen] = useState(false);
   const [clearingAll, setClearingAll] = useState(false);
 
+  // QR management
+  const [qrStatus, setQrStatus] = useState({
+    total: 0,
+    generated: 0,
+    notGenerated: 0,
+  });
+  const [qrBusy, setQrBusy] = useState(false);
+  const [qrMessage, setQrMessage] = useState("");
+
   // Hidden container used to render a printable snapshot for PDF export.
   const printRef = useRef(null);
   const [printMode, setPrintMode] = useState(null); // null | "full" | "org"
@@ -2621,6 +2630,7 @@ export default function AdminParticipants() {
       await api.delete(`/bookings/${deleteTarget._id}`);
       setDeleteTarget(null);
       fetchData();
+      loadQrStatus();
     } catch (err) {
       console.error(err);
       setError(
@@ -2629,6 +2639,78 @@ export default function AdminParticipants() {
       );
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const loadQrStatus = useCallback(async () => {
+    try {
+      const res = await api.get("/qr/status");
+      setQrStatus(res.data || {});
+    } catch (err) {
+      console.error("QR status error", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadQrStatus();
+  }, [loadQrStatus]);
+
+  const handleGenerateAllQr = async () => {
+    setQrBusy(true);
+    setQrMessage("");
+    try {
+      const res = await api.post("/qr/generate-all");
+      setQrStatus(res.data || {});
+      setQrMessage(`✅ ${res.data?.total || 0} QR codes are ready.`);
+    } catch (err) {
+      setQrMessage(err.response?.data?.message || "QR ማመንጨት አልተሳካም | Failed to generate QR codes");
+    } finally {
+      setQrBusy(false);
+    }
+  };
+
+  const downloadQrZip = async () => {
+    setQrBusy(true);
+    setQrMessage("");
+    try {
+      const res = await api.get("/qr/download-all", { responseType: "blob" });
+      saveAs(res.data, "gubae-participant-qr-codes.zip");
+      setQrMessage("✅ QR ZIP downloaded.");
+    } catch (err) {
+      console.error(err);
+      setQrMessage("QR ZIP ማውረድ አልተሳካም | Failed to download QR ZIP");
+    } finally {
+      setQrBusy(false);
+    }
+  };
+
+  const downloadSingleQr = async (booking) => {
+    try {
+      const res = await api.get(`/qr/${booking._id}`, { responseType: "blob" });
+      saveAs(res.data, `${booking.name || "participant"}-qr.png`);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to download participant QR");
+    }
+  };
+
+  const shareSingleQr = async (booking) => {
+    try {
+      const res = await api.get(`/qr/${booking._id}`, { responseType: "blob" });
+      const file = new File([res.data], `${booking.name || "participant"}-qr.png`, { type: "image/png" });
+      if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+        await navigator.share({
+          title: "Event QR Code",
+          text: `${booking.name || "Participant"} - Event attendance QR code`,
+          files: [file],
+        });
+      } else {
+        saveAs(res.data, `${booking.name || "participant"}-qr.png`);
+        setQrMessage("QR downloaded because this browser does not support direct sharing.");
+      }
+    } catch (err) {
+      if (err?.name !== "AbortError") {
+        setError(err.response?.data?.message || "Failed to share participant QR");
+      }
     }
   };
 
@@ -2713,6 +2795,56 @@ export default function AdminParticipants() {
           <div className="mb-4 text-sm text-red-600 font-semibold">{error}</div>
         )}
 
+        <section className="bg-white rounded-2xl shadow p-5 md:p-6 mb-8 border-t-4" style={{ borderTopColor: BRAND_ACCENT }}>
+          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
+            <div className="min-w-0">
+              <h2 className="text-xl font-extrabold" style={{ color: BRAND_DARK }}>
+                QR Code Center | የተሳታፊ QR ኮድ
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Generate a permanent QR code for every participant. Existing participants can be generated in bulk, and every new registration receives a QR automatically.
+              </p>
+              <div className="grid grid-cols-3 gap-3 mt-5">
+                {[
+                  ["Participants", qrStatus.total],
+                  ["QR Ready", qrStatus.generated],
+                  ["Missing QR", qrStatus.notGenerated],
+                ].map(([label, value]) => (
+                  <div key={label} className="rounded-xl bg-gray-50 border p-3">
+                    <div className="text-xs text-gray-500">{label}</div>
+                    <div className="text-2xl font-extrabold mt-1" style={{ color: BRAND_DARK }}>{value ?? 0}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="w-full lg:w-[430px] grid sm:grid-cols-2 gap-2 shrink-0">
+              <button
+                type="button"
+                disabled={qrBusy}
+                onClick={handleGenerateAllQr}
+                className="px-4 py-3 rounded-xl text-white font-bold shadow disabled:opacity-50"
+                style={{ backgroundColor: BRAND_DARK }}
+              >
+                {qrBusy ? "Working..." : "Generate Missing / All QR"}
+              </button>
+              <button
+                type="button"
+                disabled={qrBusy || !qrStatus.total}
+                onClick={downloadQrZip}
+                className="px-4 py-3 rounded-xl font-bold shadow disabled:opacity-50"
+                style={{ backgroundColor: BRAND_ACCENT, color: BRAND_DARK }}
+              >
+                Download All QR (ZIP)
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-sm text-emerald-900">
+            <strong>No email is required.</strong> Participants who register from now on automatically receive their QR on the registration success page. For existing participants, generate all QR codes once, then download the ZIP or use the <strong>QR / Share</strong> buttons in the participant list to distribute individual codes.
+          </div>
+          {qrMessage && <div className="mt-3 text-sm font-semibold" style={{ color: BRAND_DARK }}>{qrMessage}</div>}
+        </section>
         <div className="bg-white rounded-2xl shadow overflow-hidden mb-8">
           <div className="flex flex-wrap items-center justify-between gap-3 p-5 pb-4">
             <h2 className="font-bold text-lg" style={{ color: BRAND_DARK }}>
@@ -2867,7 +2999,21 @@ export default function AdminParticipants() {
                         : "—"}
                     </td>
                     <td className="py-3 px-4">
-                      <div className="flex gap-2">
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold text-white transition"
+                          style={{ backgroundColor: "#0f766e" }}
+                          onClick={() => downloadSingleQr(b)}
+                        >
+                          QR
+                        </button>
+                        <button
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold text-white transition"
+                          style={{ backgroundColor: BRAND_DARK }}
+                          onClick={() => shareSingleQr(b)}
+                        >
+                          Share
+                        </button>
                         <button
                           className="px-3 py-1.5 rounded-lg text-xs font-bold text-white transition"
                           style={{ backgroundColor: BRAND_DARK }}

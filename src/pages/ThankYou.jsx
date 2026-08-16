@@ -91,6 +91,7 @@
 //     </div>
 //   );
 // }
+import { useEffect, useState } from "react";
 import back from "../assets/home.png";
 import closedZK from "../assets/closedZK.jpg";
 // import buyMeCoffee from "../assets/buyMeCoffee.gif";
@@ -107,7 +108,42 @@ const linkBase =
 const linkInactive = "text-white hover:bg-white/10";
 const linkActiveStyle = { backgroundColor: "#ffffff", color: BRAND_DARK };
 
+function downloadQr(dataUrl, name = "participant-qr") {
+  const link = document.createElement("a");
+  link.href = dataUrl;
+  link.download = `${name.replace(/[^a-zA-Z0-9_-]+/g, "_")}-qr.png`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+async function shareQr(dataUrl, name = "Participant QR") {
+  try {
+    const response = await fetch(dataUrl);
+    const blob = await response.blob();
+    const file = new File([blob], "participant-qr.png", { type: "image/png" });
+    if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+      await navigator.share({ title: "Event QR Code", text: `${name} - Event attendance QR code`, files: [file] });
+      return;
+    }
+    downloadQr(dataUrl, name);
+  } catch (error) {
+    if (error?.name !== "AbortError") downloadQr(dataUrl, name);
+  }
+}
+
 export default function NoEvent() {
+  const [registrationQr, setRegistrationQr] = useState(null);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("latestParticipantQr");
+      if (raw) setRegistrationQr(JSON.parse(raw));
+    } catch {
+      setRegistrationQr(null);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-96 text-center">
@@ -149,6 +185,40 @@ export default function NoEvent() {
               </small>
             </small>
           </p>
+          {registrationQr?.qrDataUrl && (
+            <div className="my-6 rounded-2xl border border-emerald-200 bg-white p-5 shadow-sm">
+              <h3 className="text-lg font-extrabold text-emerald-900">
+                የመግቢያ QR Code | Your Event QR Code
+              </h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Please save this QR code or share it with yourself. Bring it to the event for attendance scanning.
+              </p>
+              <img
+                src={registrationQr.qrDataUrl}
+                alt="Participant QR Code"
+                className="w-64 h-64 mx-auto my-5 object-contain"
+              />
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button
+                  type="button"
+                  onClick={() => downloadQr(registrationQr.qrDataUrl, registrationQr.name)}
+                  className="flex-1 rounded-xl py-3 font-bold text-white"
+                  style={{ backgroundColor: BRAND_DARK }}
+                >
+                  Download QR
+                </button>
+                <button
+                  type="button"
+                  onClick={() => shareQr(registrationQr.qrDataUrl, registrationQr.name)}
+                  className="flex-1 rounded-xl py-3 font-bold border"
+                  style={{ borderColor: BRAND_DARK, color: BRAND_DARK }}
+                >
+                  Share QR
+                </button>
+              </div>
+            </div>
+          )}
+
           <hr />
           <br />
           <hr />

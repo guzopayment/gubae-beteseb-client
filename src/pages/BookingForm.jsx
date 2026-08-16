@@ -208,6 +208,16 @@ export default function BookingForm() {
       });
 
       const booking = res.data?.booking || res.data;
+      if (res.data?.qrDataUrl) {
+        localStorage.setItem(
+          "latestParticipantQr",
+          JSON.stringify({
+            qrDataUrl: res.data.qrDataUrl,
+            name: booking.name || "Participant",
+            bookingId: booking._id,
+          }),
+        );
+      }
       upsertTrackedBooking({
         bookingId: booking._id,
         name: booking.name,

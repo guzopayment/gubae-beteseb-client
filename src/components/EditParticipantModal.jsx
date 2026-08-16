@@ -76,7 +76,6 @@ export default function EditParticipantModal({
         "ትክክለኛ ስልክ ቁጥር ያስፈልጋል (09XXXXXXXX) / A valid phone number is required",
       );
     if (!sex) return setFormError("እባክዎ ፆታ ይምረጡ / Sex is required");
-
     setFormError("");
     onSave(booking._id, { name, organization, phone, sex });
   };
@@ -123,6 +122,8 @@ export default function EditParticipantModal({
             value={form.phone}
             onChange={(e) => handlePhoneChange(e.target.value)}
           />
+
+
 
           <select
             className="border p-3 w-full rounded-xl bg-white"
