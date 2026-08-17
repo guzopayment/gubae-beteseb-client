@@ -2396,6 +2396,7 @@ export default function AdminParticipants() {
   });
   const [qrBusy, setQrBusy] = useState(false);
   const [qrMessage, setQrMessage] = useState("");
+  const [qrOrganization, setQrOrganization] = useState("");
 
   // Hidden container used to render a printable snapshot for PDF export.
   const printRef = useRef(null);
@@ -2684,33 +2685,182 @@ export default function AdminParticipants() {
     }
   };
 
+  const handleGenerateOrganizationMissingQr = async () => {
+    if (!qrOrganization) {
+      setQrMessage("Please select an organization first.");
+      return;
+    }
+    setQrBusy(true);
+    setQrMessage("");
+    try {
+      const res = await api.post("/qr/generate-all", { organization: qrOrganization });
+      setQrMessage(`✅ ${res.data?.total || 0} QR codes are ready for ${qrOrganization}.`);
+      await loadQrStatus();
+    } catch (err) {
+      setQrMessage(err.response?.data?.message || "Failed to generate QR codes for the selected organization");
+    } finally {
+      setQrBusy(false);
+    }
+  };
+
+  const generateMissingAndDownloadOrganizationQrZip = async () => {
+    if (!qrOrganization) {
+      setQrMessage("Please select an organization first.");
+      return;
+    }
+
+    setQrBusy(true);
+    setQrMessage("");
+
+    try {
+      // First create only the missing QR tokens for the selected organization.
+      const generated = await api.post("/qr/generate-missing", {
+        organization: qrOrganization,
+      });
+
+      // Then download the complete QR set for that organization.
+      const res = await api.get("/qr/download-organization", {
+        params: { organization: qrOrganization },
+        responseType: "blob",
+      });
+
+      const safeOrganization = String(qrOrganization)
+        .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "")
+        .trim() || "organization";
+
+      saveAs(res.data, `${safeOrganization}-qr-codes.zip`);
+      await loadQrStatus();
+
+      setQrMessage(
+        `✅ ${generated.data?.generatedMissing || 0} missing QR codes generated and the complete ${qrOrganization} QR ZIP was downloaded.`
+      );
+    } catch (err) {
+      console.error(err);
+      setQrMessage(
+        err.response?.data?.message ||
+          "Failed to generate missing QR codes and download the selected organization ZIP"
+      );
+    } finally {
+      setQrBusy(false);
+    }
+  };
+
+  const downloadOrganizationQrZip = async () => {
+    if (!qrOrganization) {
+      setQrMessage("Please select an organization first.");
+      return;
+    }
+    setQrBusy(true);
+    setQrMessage("");
+    try {
+      const res = await api.get("/qr/download-organization", {
+        params: { organization: qrOrganization },
+        responseType: "blob",
+      });
+      const safeOrganization = String(qrOrganization)
+        .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "")
+        .trim() || "organization";
+      saveAs(res.data, `${safeOrganization}-qr-codes.zip`);
+      setQrMessage(`✅ QR ZIP downloaded for ${qrOrganization}.`);
+    } catch (err) {
+      setQrMessage("Failed to download QR codes for the selected organization");
+    } finally {
+      setQrBusy(false);
+    }
+  };
+
+  const qrFileName = (name, suffix = "") => {
+    const safe = String(name || "participant")
+      .replace(/[<>:"/\\|?*\u0000-\u001F]/g, "")
+      .replace(/[. ]+$/g, "")
+      .trim()
+      .slice(0, 120) || "participant";
+    return `${safe}${suffix}.png`;
+  };
+
+  const getApiErrorMessage = async (err, fallback) => {
+    if (err?.response?.data instanceof Blob) {
+      try {
+        const text = await err.response.data.text();
+        const parsed = JSON.parse(text);
+        return parsed?.message || fallback;
+      } catch {
+        return fallback;
+      }
+    }
+    return err?.response?.data?.message || err?.message || fallback;
+  };
+
   const downloadSingleQr = async (booking) => {
     try {
-      const res = await api.get(`/qr/${booking._id}`, { responseType: "blob" });
-      saveAs(res.data, `${booking.name || "participant"}-qr.png`);
+      const res = await api.get(`/qr/${booking._id}`, {
+        responseType: "blob",
+        headers: { Accept: "image/png" },
+      });
+
+      if (!res.data || res.data.size === 0) {
+        throw new Error("The server returned an empty QR image.");
+      }
+
+      saveAs(res.data, qrFileName(booking.name));
+      setQrMessage(`✅ QR downloaded for ${booking.name}.`);
     } catch (err) {
-      setError(err.response?.data?.message || "Failed to download participant QR");
+      console.error("Download participant QR error:", err);
+      setError(
+        await getApiErrorMessage(
+          err,
+          "Failed to download participant QR | የተሳታፊው QR ኮድ ማውረድ አልተሳካም",
+        ),
+      );
     }
   };
 
   const shareSingleQr = async (booking) => {
     try {
-      const res = await api.get(`/qr/${booking._id}`, { responseType: "blob" });
-      const file = new File([res.data], `${booking.name || "participant"}-qr.png`, { type: "image/png" });
-      if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+      const res = await api.get(`/qr/${booking._id}`, {
+        responseType: "blob",
+        headers: { Accept: "image/png" },
+      });
+
+      if (!res.data || res.data.size === 0) {
+        throw new Error("The server returned an empty QR image.");
+      }
+
+      const file = new File(
+        [res.data],
+        qrFileName(booking.name),
+        { type: "image/png" },
+      );
+
+      const canShareFiles =
+        typeof navigator.share === "function" &&
+        (!navigator.canShare || navigator.canShare({ files: [file] }));
+
+      if (canShareFiles) {
         await navigator.share({
-          title: "Event QR Code",
+          title: `${booking.name || "Participant"} QR Code`,
           text: `${booking.name || "Participant"} - Event attendance QR code`,
           files: [file],
         });
+        setQrMessage(`✅ QR shared for ${booking.name}.`);
       } else {
-        saveAs(res.data, `${booking.name || "participant"}-qr.png`);
-        setQrMessage("QR downloaded because this browser does not support direct sharing.");
+        // Desktop browsers often do not support Web Share with files.
+        // In that case, download the exact participant-named PNG.
+        saveAs(res.data, qrFileName(booking.name));
+        setQrMessage(
+          `QR downloaded as ${qrFileName(booking.name)} because this browser does not support file sharing.`,
+        );
       }
     } catch (err) {
-      if (err?.name !== "AbortError") {
-        setError(err.response?.data?.message || "Failed to share participant QR");
-      }
+      if (err?.name === "AbortError") return;
+
+      console.error("Share participant QR error:", err);
+      setError(
+        await getApiErrorMessage(
+          err,
+          "Failed to share participant QR | የተሳታፊው QR ኮድ ማጋራት አልተሳካም",
+        ),
+      );
     }
   };
 
@@ -2802,7 +2952,7 @@ export default function AdminParticipants() {
                 QR Code Center | የተሳታፊ QR ኮድ
               </h2>
               <p className="text-sm text-gray-500 mt-1">
-                Generate a permanent QR code for every participant. Existing participants can be generated in bulk, and every new registration receives a QR automatically.
+                Generate a permanent QR code for every participant. Each QR image includes the participant name and is downloaded using the participant name as the filename. Existing participants can be generated in bulk, and every new registration receives a QR automatically.
               </p>
               <div className="grid grid-cols-3 gap-3 mt-5">
                 {[
@@ -2818,7 +2968,7 @@ export default function AdminParticipants() {
               </div>
             </div>
 
-            <div className="w-full lg:w-[430px] grid sm:grid-cols-2 gap-2 shrink-0">
+            <div className="w-full lg:w-[520px] grid sm:grid-cols-2 gap-2 shrink-0">
               <button
                 type="button"
                 disabled={qrBusy}
@@ -2837,11 +2987,53 @@ export default function AdminParticipants() {
               >
                 Download All QR (ZIP)
               </button>
+
+              <select
+                value={qrOrganization}
+                onChange={(e) => setQrOrganization(e.target.value)}
+                disabled={qrBusy}
+                className="px-4 py-3 rounded-xl border-2 border-gray-200 bg-white font-semibold text-sm sm:col-span-2"
+              >
+                <option value="">Select organization for QR generation</option>
+                {orgSummary.map((org) => (
+                  <option key={org.organization} value={org.organization}>
+                    {org.organization} ({org.count})
+                  </option>
+                ))}
+              </select>
+
+              <button
+                type="button"
+                disabled={qrBusy || !qrOrganization}
+                onClick={handleGenerateOrganizationMissingQr}
+                className="px-4 py-3 rounded-xl text-white font-bold shadow disabled:opacity-50"
+                style={{ backgroundColor: "#2563eb" }}
+              >
+                Generate Missing QR — Selected Organization
+              </button>
+              <button
+                type="button"
+                disabled={qrBusy || !qrOrganization}
+                onClick={downloadOrganizationQrZip}
+                className="px-4 py-3 rounded-xl font-bold shadow disabled:opacity-50"
+                style={{ backgroundColor: "#0f766e", color: "white" }}
+              >
+                Download Selected Organization QR (ZIP)
+              </button>
+              <button
+                type="button"
+                disabled={qrBusy || !qrOrganization}
+                onClick={generateMissingAndDownloadOrganizationQrZip}
+                className="px-4 py-3 rounded-xl text-white font-bold shadow disabled:opacity-50 sm:col-span-2"
+                style={{ backgroundColor: "#7c3aed" }}
+              >
+                Generate Missing + Download Selected Organization QR (ZIP)
+              </button>
             </div>
           </div>
 
           <div className="mt-4 rounded-xl bg-emerald-50 border border-emerald-200 p-3 text-sm text-emerald-900">
-            <strong>No email is required.</strong> Participants who register from now on automatically receive their QR on the registration success page. For existing participants, generate all QR codes once, then download the ZIP or use the <strong>QR / Share</strong> buttons in the participant list to distribute individual codes.
+            <strong>No email is required.</strong> Every QR image displays the participant name above the QR and uses that participant's name as its filename. Use the organization selector to generate missing QR codes for one organization, then either download its complete QR ZIP or use the combined button to generate missing codes and download the complete organization ZIP in one step.
           </div>
           {qrMessage && <div className="mt-3 text-sm font-semibold" style={{ color: BRAND_DARK }}>{qrMessage}</div>}
         </section>
