@@ -121,11 +121,7 @@ async function shareQr(dataUrl, name = "Participant QR") {
   try {
     const response = await fetch(dataUrl);
     const blob = await response.blob();
-    const safeName = String(name || "Participant QR")
-      .trim()
-      .replace(/[^a-zA-Z0-9\u1200-\u137F._-]+/g, "_")
-      .replace(/^_+|_+$/g, "") || "Participant-QR";
-    const file = new File([blob], `${safeName}-qr.png`, { type: "image/png" });
+    const file = new File([blob], "participant-qr.png", { type: "image/png" });
     if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
       await navigator.share({ title: "Event QR Code", text: `${name} - Event attendance QR code`, files: [file] });
       return;
