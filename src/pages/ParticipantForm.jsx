@@ -411,7 +411,10 @@ async function blobToDataUrl(blob) {
 }
 
 async function loadExistingQr(booking) {
-  if (!booking) throw new Error("Existing participant details were not returned by the server.");
+  if (!booking)
+    throw new Error(
+      "Existing participant details were not returned by the server.",
+    );
 
   if (booking.qrDataUrl) return booking.qrDataUrl;
   if (booking.qrImage) return booking.qrImage;
@@ -461,7 +464,10 @@ async function shareQr(dataUrl, name = "Participant QR") {
     const response = await fetch(dataUrl);
     const blob = await response.blob();
     const file = new File([blob], "participant-qr.png", { type: "image/png" });
-    if (navigator.share && (!navigator.canShare || navigator.canShare({ files: [file] }))) {
+    if (
+      navigator.share &&
+      (!navigator.canShare || navigator.canShare({ files: [file] }))
+    ) {
       await navigator.share({
         title: "Event QR Code",
         text: `${name} - Event attendance QR code`,
@@ -511,7 +517,10 @@ export default function BookingForm() {
     setModalOpen(true);
   };
 
-  const recoverDuplicateQr = async (bookingOverride = null, payloadOverride = null) => {
+  const recoverDuplicateQr = async (
+    bookingOverride = null,
+    payloadOverride = null,
+  ) => {
     const booking = bookingOverride || duplicateBooking;
     const payload = payloadOverride || duplicatePayload;
     if (!booking && !payload) return;
@@ -522,10 +531,7 @@ export default function BookingForm() {
     try {
       let normalizedBooking = booking;
       let qr =
-        booking?.qrDataUrl ||
-        booking?.qrImage ||
-        booking?.qrCodeDataUrl ||
-        "";
+        booking?.qrDataUrl || booking?.qrImage || booking?.qrCodeDataUrl || "";
 
       // The current backend returns qrDataUrl directly in the 409 response.
       // That is the preferred path because it is the original QR token.
@@ -549,21 +555,31 @@ export default function BookingForm() {
         const bookingId = pickBookingId(normalizedBooking);
         if (bookingId) {
           try {
-            const response = await api.get(`/qr/${encodeURIComponent(bookingId)}`, {
-              responseType: "blob",
-            });
+            const response = await api.get(
+              `/qr/${encodeURIComponent(bookingId)}`,
+              {
+                responseType: "blob",
+              },
+            );
             if (response.data?.size) qr = await blobToDataUrl(response.data);
           } catch (fallbackError) {
-            console.warn("Admin-protected QR fallback unavailable:", fallbackError);
+            console.warn(
+              "Admin-protected QR fallback unavailable:",
+              fallbackError,
+            );
           }
         }
       }
 
       if (!normalizedBooking) {
-        throw new Error("Existing participant details were not returned by the server.");
+        throw new Error(
+          "Existing participant details were not returned by the server.",
+        );
       }
       if (!qr) {
-        throw new Error("The server confirmed the registration but did not return the existing QR code.");
+        throw new Error(
+          "The server confirmed the registration but did not return the existing QR code.",
+        );
       }
 
       setDuplicateBooking(normalizedBooking);
@@ -819,11 +835,15 @@ export default function BookingForm() {
           <div className="w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl bg-white shadow-2xl border border-emerald-100">
             <div
               className="px-6 py-5 text-white rounded-t-3xl"
-              style={{ background: `linear-gradient(135deg, ${BRAND_DARKER}, ${BRAND_DARK})` }}
+              style={{
+                background: `linear-gradient(135deg, ${BRAND_DARKER}, ${BRAND_DARK})`,
+              }}
             >
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] opacity-80">Registration Found</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] opacity-80">
+                    Registration Found
+                  </p>
                   <h3 className="text-xl md:text-2xl font-extrabold mt-1">
                     ቀድሞ ተመዝግበዋል | Already Registered
                   </h3>
@@ -840,13 +860,16 @@ export default function BookingForm() {
                   ይህ ተሳታፊ ከዚህ በፊት ተመዝግቧል።
                 </p>
                 <p className="text-sm text-gray-600 mt-1">
-                  You do not need to register again. You can retrieve the same QR code used for event attendance.
+                  You do not need to register again. You can retrieve the same
+                  QR code used for event attendance.
                 </p>
               </div>
 
               {duplicateBooking && (
                 <div className="mt-4 rounded-2xl border border-gray-200 p-4">
-                  <div className="text-xs uppercase tracking-wider text-gray-500">Participant</div>
+                  <div className="text-xs uppercase tracking-wider text-gray-500">
+                    Participant
+                  </div>
                   <div className="text-lg font-extrabold text-gray-900 mt-1">
                     {duplicateBooking.name || form.name}
                   </div>
@@ -868,7 +891,7 @@ export default function BookingForm() {
               {duplicateQr && !duplicateLoading && (
                 <div className="mt-5 rounded-2xl border border-emerald-200 bg-white p-4 text-center shadow-sm">
                   <p className="font-extrabold text-emerald-900">
-                    የእርስዎ QR Code | Your QR Code
+                    የእርስዎ የመግቢያ QR Code | Your QR Code
                   </p>
                   <img
                     src={duplicateQr}
@@ -876,12 +899,18 @@ export default function BookingForm() {
                     className="w-64 h-64 max-w-full mx-auto my-4 object-contain rounded-xl"
                   />
                   <p className="text-xs text-gray-500 mb-4">
-                    This is the original QR code. The attendance token has not been changed.
+                    This is the original QR code. The attendance token has not
+                    been changed.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
                       type="button"
-                      onClick={() => downloadQr(duplicateQr, duplicateBooking?.name || form.name)}
+                      onClick={() =>
+                        downloadQr(
+                          duplicateQr,
+                          duplicateBooking?.name || form.name,
+                        )
+                      }
                       className="rounded-xl py-3 px-4 font-extrabold text-white shadow-md hover:-translate-y-0.5 transition"
                       style={{ backgroundColor: BRAND_DARK }}
                     >
@@ -889,7 +918,12 @@ export default function BookingForm() {
                     </button>
                     <button
                       type="button"
-                      onClick={() => shareQr(duplicateQr, duplicateBooking?.name || form.name)}
+                      onClick={() =>
+                        shareQr(
+                          duplicateQr,
+                          duplicateBooking?.name || form.name,
+                        )
+                      }
                       className="rounded-xl py-3 px-4 font-extrabold border-2 hover:bg-emerald-50 transition"
                       style={{ borderColor: BRAND_DARK, color: BRAND_DARK }}
                     >
@@ -904,7 +938,9 @@ export default function BookingForm() {
                   <p className="font-bold">QR ኮድ አልተገኘም</p>
                   <p className="mt-1">{duplicateError}</p>
                   <p className="mt-2 text-xs text-red-700">
-                    If this continues, please contact the event coordinator. The registration server should return the original QR automatically.
+                    If this continues, please contact the event coordinator. The
+                    registration server should return the original QR
+                    automatically.
                   </p>
                 </div>
               )}
