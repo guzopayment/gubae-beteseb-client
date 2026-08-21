@@ -224,7 +224,7 @@
 //                   <small>
 //                     <small>
 //                       {/* <small>+
-                      
+
 //                       */}{" "}
 //                       <em>
 //                         ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
@@ -241,7 +241,7 @@
 //               >
 //                 {/*<p className="font-bold mb-3">
 //                    የጉዞ ተሳትፎ ዋጋ በአንድ ሰው 800 ብር ነው። በአስተባባሪዎች ከተነገራችሁ ከሚከተሉት ኦፊሴላዊ
-//                   የምዝገባ ማስረጃ ሂሳቦች አንዱን ይጠቀሙና ያከናውኑ። ከዚያም ፦ 
+//                   የምዝገባ ማስረጃ ሂሳቦች አንዱን ይጠቀሙና ያከናውኑ። ከዚያም ፦
 //                   ጉዞው ዛሬ ሰኔ ሃያ ስምንት እንደ እግዚአብሔር ፍቃድ ይከናወናል። ስለሆነም፦
 //                 </p>*/}
 //                 {/*<h3 className="font-extrabold text-yellow-800 text-lg mb-3">
@@ -252,7 +252,7 @@
 //                     className=" w-240 h-180 mx-6 rounded-s-md "
 //                   />
 //                   ቲኬት ሽያጭ አብቅቷል። ስለተሳተፍ እናመሰግናለን | Ticket sales are closed.
-//                   Thank you for your participation. 
+//                   Thank you for your participation.
 //                 </h3>*/}
 //                 {/* <h2 className="mt-3">
 //                   <strong>
@@ -428,7 +428,7 @@
 //                 ))}
 //               </div>
 //             </div>
-//           )} 
+//           )}
 //              <div className="w-full max-w-4xl mx-auto bg-white/85 rounded-3xl shadow-xl p-5 md:p-6 text-left">
 //             <h3 className="text-2xl font-bold text-emerald-700 mb-4">
 //               በቅርብ ጊዜ የተዘመኑ የምዝገባ ሁኔታዎች | Recent Registration Updates
@@ -486,7 +486,6 @@
 //     </div>
 //   );
 // }
-
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -770,9 +769,7 @@ export default function Home() {
     const sanitized = sanitizePhoneInput(value);
 
     if (value !== sanitized) {
-      setTooltip(
-        "ስልክ ቁጥር ቁጥሮችን ብቻ ይቀበላል፤ ከ10 ዲጂት መብለጥ አይችልም።",
-      );
+      setTooltip("ስልክ ቁጥር ቁጥሮችን ብቻ ይቀበላል፤ ከ10 ዲጂት መብለጥ አይችልም።");
     }
 
     setLookup((prev) => ({
@@ -827,9 +824,11 @@ export default function Home() {
                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
                 style={{ color: BRAND_DARK }}
               >
-                ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት
+                {/* ውድ ቤተሰባችን እንኳን ደኅና መጡ፤ ይህ ገጽ ለጉባኤ ቤተሰብ ለብሥራት
                 ቤተሰባዊ አንድነት የሚጠነክርበት ታላቅ ቀን የሚሳተፉ አባላትን
-                መረጃ ለመሰብሰብ ብቻ ይጠቅማል።
+                መረጃ ለመሰብሰብ ብቻ ይጠቅማል። */}
+                ውድ ቤተሰባችን እንኳን ደህና መጡ፡፡ ለታላቁ ጉባኤ ተመዝግበው ከሆነ የመግቢያ{" "}
+                <strong> QR code </strong>
                 <strong
                   style={{
                     color: BRAND_ACCENT,
@@ -841,8 +840,8 @@ export default function Home() {
                   <small>
                     <small>
                       <em>
-                        ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ
-                        ክፍያ የሌለው እና የማይጠይቅም መሆኑን በመገንዘብ፤{" "}
+                        ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
+                        መሆኑን ለማስገንዘብ እንወዳለን፤ እንዲሁም ለመግቢያ የሚያገለግልዎን QR ኮድ አውርደው ወደ ጉባኤው ሲመጡ ለማስነበብ ዝግጁ ይሁኑ። {" "}
                       </em>
                     </small>
                   </small>
@@ -865,10 +864,9 @@ export default function Home() {
                       <small>
                         <small>
                           <small>
-                            ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም
-                            የመተግበሪያ ማውረጃ አይጠይቅም። This site never asks
-                            for passwords, card numbers, PIN codes, or software
-                            downloads.
+                            ይህ ገጽ የይለፍ ቃል፣ የካርድ ቁጥር፣ ፒን ወይም የመተግበሪያ ማውረጃ አይጠይቅም።
+                            This site never asks for passwords, card numbers,
+                            PIN codes, or software downloads.
                           </small>
                         </small>
                       </small>
@@ -881,14 +879,16 @@ export default function Home() {
                 className="text-emerald-700 text-xl md:text-2xl px-3 py-4 rounded-[30px] font-bold"
                 style={{ color: BRAND_DARK }}
               >
-                በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "}
+                {/* በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "} */}
+                <strong>ያስታውሱ የአዲስ ምዝገባ ተጠናቋል፡፡</strong>
+                {/* <small style={{ color: BRAND_ACCENT }}>
+                  <em> ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>
+                </small> */}
+                ከታች ያለውን{" "}
                 <small style={{ color: BRAND_ACCENT }}>
-                  <em>
-                    {" "}
-                    ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ{" "}
-                  </em>
-                </small>
-                የሚለውን በመንካት ተሳታፊነትዎን እንዲያረጋግጡልን እንጠይቃለን።
+                  <em> ለጉባኤው መግቢያ QR ኮድዎን ያውርዱ! </em> 
+                </small>{" "}
+                የሚለውን በመጫን ማግኘት ይችላሉ ፡፡
               </h2>
 
               <h5 className="text-green-700 font-bold place-items-center mb-4">
@@ -904,7 +904,7 @@ export default function Home() {
                 className="bg-gradient-to-r from-green-950 to-emerald-950 text-white text-lg md:text-3xl px-8 md:px-16 py-5 md:py-7 rounded-[30px] shadow-lg hover:scale-105 hover:from-emerald-800 hover:to-emerald-950 transition duration-300 border border-white/30 w-full"
                 style={{ color: BRAND_ACCENT }}
               >
-                ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ
+                ለጉባኤው መግቢያ QR ኮድዎን ያውርዱ!
               </button>
 
               <div className="mt-6 text-center text-extra-bold"></div>

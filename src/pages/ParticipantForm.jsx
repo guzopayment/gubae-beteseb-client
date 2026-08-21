@@ -716,7 +716,18 @@ export default function BookingForm() {
       console.error(submitError.response?.data || submitError.message);
 
       if (submitError.response?.status === 409) {
+        // Existing participant: keep the current QR recovery popup unchanged.
         await openDuplicateRecovery(submitError, payload);
+      } else if (
+        submitError.response?.status === 403 &&
+        submitError.response?.data?.registrationClosed
+      ) {
+        // New registration is closed. Existing participants are handled above.
+        showModal(
+          "📢 ምዝገባው ተዘግቷል",
+          "Participation has ended. New participant registration is no longer available.\n\nምዝገባው ተዘግቷል፤ አዲስ ተሳታፊ መመዝገብ ከአሁን በኋላ አይቻልም።",
+          "info",
+        );
       } else {
         showModal(
           "ማስጠንቀቂያ",
@@ -755,15 +766,18 @@ export default function BookingForm() {
           className="bg-white p-6 md:p-8 rounded-3xl shadow-xl"
         >
           <h2
-            className="text-2xl md:text-3xl font-extrabold mb-4 text-center text-emerald-700"
+            className="text-2xl md:text-2xl font-extrabold mb-4 text-center text-emerald-700"
             style={{ color: BRAND_DARKER }}
           >
-            ለጉባኤ ቤተሰብ ለብሥራት ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ የሚሞላ ቅጽ
+            {/* ለጉባኤ ቤተሰብ ለብሥራት ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ የሚሞላ ቅጽ */}
+            የእርስዎን የመግቢያ QR Code ለማውረድ | To Download Your QR Code
           </h2>
 
           <p className="text-center text-gray-500 mb-6">
-            እባክዎ መረጃዎትን በትክክል ይሙሉ፣ ለጉባኤው የተሳካ መሆን ቅድመ ዝግጅት ቁጥራዊ መረጃ ለመሰብሰብ ብቻ
-            የተዘጋጀ ነው።
+            እባክዎ መረጃዎትን በትክክል ይሙሉ፣ ለጉባኤው የተቀላጠፈ ክንውን ያለ ወረቀት አቴንዳንስ ለመመዝገብ
+            እንዲያመች ታስቦ የተዘጋጀ ነው።
+            {/* ለጉባኤው የተሳካ መሆን ቅድመ ዝግጅት ቁጥራዊ መረጃ ለመሰብሰብ ብቻ 
+            የተዘጋጀ ነው።*/}
           </p>
 
           <input
@@ -819,7 +833,7 @@ export default function BookingForm() {
             className="bg-emerald-950 text-white w-full py-3 rounded-xl font-bold hover:bg-emerald-900 transition disabled:opacity-60"
             style={{ color: BRAND_ACCENT }}
           >
-            {submitting ? "ይጠብቁ በመላክ ላይ ነው..." : "መረጃ ያስገቡ / Submit"}
+            {submitting ? "ይጠብቁ በመፈለግ ላይ ነው..." : "QR ኮድ ይፈልጉ / Submit"}
           </button>
 
           <div className="text-sm text-gray-500 mt-4">
