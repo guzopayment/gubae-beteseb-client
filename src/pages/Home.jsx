@@ -841,7 +841,8 @@ export default function Home() {
                     <small>
                       <em>
                         ማሳሰቢያ፦ ጉባኤው ላይ ለመገኘት ምንም አይነት የገንዘብ ክፍያ የሌለው እና የማይጠይቅም
-                        መሆኑን ለማስገንዘብ እንወዳለን፤ እንዲሁም ለመግቢያ የሚያገለግልዎን QR ኮድ አውርደው ወደ ጉባኤው ሲመጡ ለማስነበብ ዝግጁ ይሁኑ። {" "}
+                        መሆኑን ለማስገንዘብ እንወዳለን፤ እንዲሁም ለመግቢያ የሚያገለግልዎን QR ኮድ አውርደው
+                        ወደ ጉባኤው ሲመጡ ለማስነበብ ዝግጁ ይሁኑ።{" "}
                       </em>
                     </small>
                   </small>
@@ -880,15 +881,17 @@ export default function Home() {
                 style={{ color: BRAND_DARK }}
               >
                 {/* በመሆኑም እርስዎ ለዚህ ታላቅ ጉባኤ የሚገኙ መሆንዎን ከታች ያለውን{" "} */}
-                <strong>ያስታውሱ የአዲስ ምዝገባ ተጠናቋል፡፡</strong>
                 {/* <small style={{ color: BRAND_ACCENT }}>
                   <em> ጉባኤው ላይ እንደሚገኙ ለማረጋገጥ በዚህ ቅጽ ይሙሉ </em>
                 </small> */}
                 ከታች ያለውን{" "}
                 <small style={{ color: BRAND_ACCENT }}>
-                  <em> ለጉባኤው መግቢያ QR ኮድዎን ያውርዱ! </em> 
+                  <em> ለጉባኤው መግቢያ QR ኮድዎን ያውርዱ! </em>
                 </small>{" "}
                 የሚለውን በመጫን ማግኘት ይችላሉ ፡፡
+                <strong>
+                  <em> ያስታውሱ የአዲስ ምዝገባ ተጠናቋል፡፡</em>
+                </strong>
               </h2>
 
               <h5 className="text-green-700 font-bold place-items-center mb-4">
