@@ -44,7 +44,7 @@ export default function AdminSpecialGuests() {
       setForm(empty);
       show(
         "ተመዝግቧል / PRESENT",
-        `የልዩ እንግዳው ተመዝግቧል።\n\n${r.data?.booking?.name || "Participant"}\n${r.data?.booking?.organization || ""}\n\nሁኔታ፦ PRESENT\nQR መቃኘት አያስፈልግም።`,
+        `የልዩ እንግዳው ወይም አባሉ ተመዝግቧል።\n\n${r.data?.booking?.name || "Participant"}\n${r.data?.booking?.organization || ""}\n\nሁኔታ፦ PRESENT\nQR መቃኘት አያስፈልግም።`,
         "success",
       );
     } catch (err) {
