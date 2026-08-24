@@ -81,7 +81,7 @@ export default function AdminSpecialGuests() {
                 Non-registered Participant Registration
               </h1>
               <p className="mt-2 text-slate-600 max-w-2xl">
-                ለልዩ እንግዶች እና መጀመሪያ በሊንክ ያልተመዘገቡ አባልት መመዝገቢያ ብቻ። Public
+                ለልዩ እንግዶች እና መጀመሪያ በሊንክ ያልተመዘገቡ አባላት መመዝገቢያ ብቻ። Public
                 registration is closed, but authorized staff can add
                 Non-registered by link here.
               </p>
