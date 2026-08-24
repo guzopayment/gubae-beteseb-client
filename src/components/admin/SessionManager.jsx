@@ -31,7 +31,7 @@ export default function SessionManager() {
 
     checkSession();
 
-    const interval = setInterval(checkSession, 15000);
+    const interval = setInterval(checkSession, 7000);
     return () => clearInterval(interval);
   }, [location.pathname, navigate]);
 
