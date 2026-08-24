@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import BackToTopButton from "./components/BackToTopButton";
 import AdminParticipants from "./pages/AdminParticipants";
 import ParticipantForm from "./pages/ParticipantForm";
+import AdminSpecialGuests from "./pages/AdminSpecialGuests"
 
 export default function App() {
   return (
@@ -29,6 +30,10 @@ export default function App() {
             <Route path="/no-event" element={<NoEvent />} />
             <Route path="/thank-you" element={<ThankYou />} />
             <Route path="/admin-login" element={<AdminLogin />} />
+            <Route
+              path="/admin-special-guests"
+              element={<ProtectedRoute><ErrorBoundary><AdminSpecialGuests /></ErrorBoundary></ProtectedRoute>}
+            />
             <Route
               path="/admin-participants"
               element={

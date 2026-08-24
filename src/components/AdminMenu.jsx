@@ -9,7 +9,8 @@ const MENU = [
     toolTips: "Disabled for now",
   },
   // /admin-dashboard" },
-  { id: "participants", label: "Participants ", path: "/admin-participants" },
+  { id: "participants", label: "Participants", path: "/admin-participants" },
+  { id: "special-guests", label: "⭐ Special Guests", path: "/admin-special-guests" },
   {
     id: "report",
     label: "",
