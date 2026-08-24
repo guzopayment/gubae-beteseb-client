@@ -10,7 +10,11 @@ const MENU = [
   },
   // /admin-dashboard" },
   { id: "participants", label: "Participants", path: "/admin-participants" },
-  { id: "special-guests", label: "⭐ Special Guests", path: "/admin-special-guests" },
+  {
+    id: "special-guests",
+    label: "⭐ Non-registered Participants ",
+    path: "/admin-special-guests",
+  },
   {
     id: "report",
     label: "",
