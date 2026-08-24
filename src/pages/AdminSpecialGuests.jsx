@@ -78,7 +78,7 @@ export default function AdminSpecialGuests() {
                 className="text-3xl md:text-4xl font-black"
                 style={{ color: BRAND_DARK }}
               >
-                Special Guest Registration
+                Non-registered Participant Registration
               </h1>
               <p className="mt-2 text-slate-600 max-w-2xl">
                 ለልዩ እንግዶች እና መጀመሪያ በሊንክ ያልተመዘገቡ አባልት መመዝገቢያ ብቻ። Public
