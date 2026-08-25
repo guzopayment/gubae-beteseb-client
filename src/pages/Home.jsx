@@ -492,7 +492,8 @@ import { useNavigate } from "react-router-dom";
 import bgImage from "../assets/qineeSocialDeputs.jpg";
 import clickOn from "../assets/clickOn.gif";
 // import handThank from "../assets/handThank.gif";
-import cautionImage from "../assets/caution.jpg";
+// import cautionImage from "../assets/caution.jpg";
+import "./Home.css";
 import api from "../services/api";
 import socket from "../socket";
 import MessageModal from "../components/MessageModal";
@@ -503,11 +504,48 @@ import {
   buildStatusMessage,
 } from "../utils/bookingValidation";
 
+// import buyMeCoffee from "../assets/buyMeCoffee.gif";
+import subscribe from "../assets/subscribe.gif";
+import subscribeM from "../assets/subscribeM.gif";
+// const BRAND_DARK = "#00313c";
+// const BRAND_DARKER = "#022e38";
+// const BRAND_ACCENT = "#f2b134";
 // Brand palette
 const BRAND_DARK = "#00313c";
 const BRAND_DARKER = "#022e38";
-const BRAND_ACCENT = "#f2b134";
+const BRAND_ACCENT = "#f2b134"; // yellow accent — swap here if you have an exact hex
+function LiveNewsTicker() {
+  const newsItems = [
+    "📢 ታላቁ ጉባኤ በደስታ ተጀምሮ እንደእግዚአብሔር ፈቃድ በሰላም ተጠናቋል።",
+    "🎉 ለተሳተፋችሁ በሙሉ እናመሰግናለን።",
+    "📱 የቅኔ ሱፐር አፕን መካነ ምስያጥ የቴሌግራም ገጽ ላይ ያገኙታል። ",
+    "🙏 የቤተሰባዊ አንድነታችን ይጠናከር።",
+    "📸 የጉባኤውን ውብ ትዝታዎች ከእኛ ጋር ይጋሩ።",
+    "🔔 አስፈላጊ ማስታወቂያዎችን በቅኔ ሱፐር አፕ በኩል ይከታተሉ። ",
+  ];
 
+  return (
+    <div
+      className="relative overflow-hidden rounded-xl mt-2 w-full"
+      style={{
+        backgroundColor: BRAND_DARK,
+        height: "280px",
+      }}
+    >
+      <div className="live-news-track">
+        {newsItems.map((news, index) => (
+          <div
+            key={index}
+            className="live-news-item"
+            style={{ color: BRAND_ACCENT }}
+          >
+            {news}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 // Countdown target:
 // August 25, 2026 at 11:59:59 PM Ethiopia time (UTC+3)
 // const EVENT_END_DATE = new Date("2026-08-25T23:59:59+03:00");
@@ -638,7 +676,81 @@ function CountdownTimer() {
                 color: BRAND_DARK,
               }}
             >
-              🎉 ታላቁ ቀን ደርሷል!
+              🎉 ታላቁ ቀን ደርሷል! <br /> ለተደረገው ተሳትፎ ከልብ እናመሰግናለን። የቅኔ ሱፐር አፑን መካነ
+              ምስያጥ የቴሌግራም ገጽ ላይ ያገኙታል።
+              <div className="mt-4  md:grid-cols-2 gap-4">
+                <strong className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                  {" "}
+                  <div className="mt-3">
+                    <div
+                      className="text-xs md:text-sm font-bold px-3 py-1"
+                      style={{
+                        backgroundColor: BRAND_ACCENT,
+                        color: BRAND_DARK,
+                      }}
+                    >
+                      🔴 LIVE NEWS
+                    </div>
+
+                    <LiveNewsTicker />
+                  </div>
+                  <a
+                    href="https://www.youtube.com/@MuluTilaCodeCamp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <small>
+                      {" "}
+                      <strong style={{ color: BRAND_DARKER }}>
+                        ይህን ሲስተም የሰራውን ሰው <strong> ዩቱብ ቻነል </strong>
+                      </strong>{" "}
+                      ሰብስክራይብ ያድርጉ | Do not foget to Subscribe the Developer's
+                      Youtube channel
+                    </small>{" "}
+                    <br />
+                    <img
+                      src={subscribeM}
+                      alt="Click On "
+                      srcSet=""
+                      className="w-60 h-20 mx-6 rounded-full items-center"
+                    />{" "}
+                  </a>{" "}
+                  <br />
+                  <a
+                    href="https://www.youtube.com/@MuluTilaCodeCamp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={subscribe}
+                      alt="Subscribe"
+                      className="w-60 h-20 mx-6 rounded-full items-center"
+                    />
+                  </a>
+                  {/* <div
+                    className="text-xs md:text-sm text-gray-500 mt-2"
+                    style={{ backgroundColor: BRAND_DARK, height: 70 }}
+                  > */}
+                  {/* </div> */}
+                </strong>{" "}
+                <br />
+                <section>
+                  <strong>
+                    የቅኔ ሱፐር አፑን መካነ ምስያጥ የቴሌግራም ገጽ ላይ ያገኙታል። <br />
+                    <a
+                      href="https://t.me/+1k0g3J6j7iQ5Y2E0"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {/* <img
+                        src={telegram}
+                        alt="Telegram"
+                        className="w-60 h-20 mx-6 rounded-full items-center"
+                      /> */}
+                    </a>
+                  </strong>
+                </section>
+              </div>
               <br />
               The great day has arrived!
             </div>
