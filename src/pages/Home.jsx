@@ -510,8 +510,8 @@ const BRAND_ACCENT = "#f2b134";
 
 // Countdown target:
 // August 25, 2026 at 11:59:59 PM Ethiopia time (UTC+3)
-const EVENT_END_DATE = new Date("2026-08-25T23:59:59+03:00");
-
+// const EVENT_END_DATE = new Date("2026-08-25T23:59:59+03:00");
+const EVENT_END_DATE = new Date("2026-08-25T17:00:00+03:00");
 // Digital countdown component
 function CountdownTimer() {
   const calculateRemaining = () => {
